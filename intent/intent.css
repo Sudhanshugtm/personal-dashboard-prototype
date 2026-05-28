@@ -1,0 +1,42 @@
+/*
+ * Intent-filter variant additions (layered on top of ../styles.css).
+ * A horizontally scrollable chip row replaces the flat "For You" scope bar,
+ * letting the feed collapse to a single intent (Read / Contribute / Moderate).
+ * Chips are native cdx-button; active = progressive primary, rest = quiet.
+ */
+
+.intent-filter {
+	flex: 0 0 auto;
+	display: flex;
+	gap: 6px;
+	padding: 8px 12px;
+	overflow-x: auto;
+	scrollbar-width: none;            /* Firefox */
+	-webkit-overflow-scrolling: touch;
+	background: var( --background-color-neutral-subtle, #f8f9fa );
+	border-bottom: 1px solid var( --border-color-muted, #dadde3 );
+}
+
+.intent-filter::-webkit-scrollbar { display: none; }   /* WebKit */
+
+.intent-chip {
+	flex: 0 0 auto;
+	white-space: nowrap;
+	border-radius: 999px;
+}
+
+.intent-chip__count {
+	margin-left: 6px;
+	padding: 0 6px;
+	border-radius: 999px;
+	font-size: var( --font-size-x-small, 0.75rem );
+	font-weight: 700;
+	background: var( --background-color-neutral, #eaecf0 );
+	color: var( --color-subtle, #54595d );
+}
+
+/* keep the count legible when the chip is the active (filled) one */
+.intent-chip.cdx-button--weight-primary .intent-chip__count {
+	background: rgba( 255, 255, 255, 0.25 );
+	color: var( --color-inverted, #fff );
+}
