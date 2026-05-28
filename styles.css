@@ -1,0 +1,243 @@
+/*
+ * Personal Dashboard — "For You" baseline (mobile-first standalone).
+ *
+ * Colour, surface, border and type values are Wikimedia Codex semantic
+ * design tokens (loaded via CDN in index.html); hex fallbacks live in each
+ * var() so it still reads if the token sheet fails. Buttons/icons are native
+ * cdx-* components. Spacing/radius are px (this Codex version does not expose
+ * them as custom properties).
+ *
+ * Layout: on a phone the app fills the screen (app shell — fixed header,
+ * scrolling feed, floating toolbar). On wider screens it sits inside a
+ * centred device frame so it still reads as a phone on desktop.
+ */
+
+* { box-sizing: border-box; }
+
+html, body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	background: var( --background-color-base, #fff );
+	color: var( --color-base, #202122 );
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+	font-size: var( --font-size-medium, 1rem );
+	line-height: 1.45;
+	-webkit-text-size-adjust: 100%;
+}
+
+/* ---- app shell (mobile-first: fills the screen) ---- */
+.device {
+	width: 100%;
+}
+
+.app {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;          /* fallback */
+	height: 100dvh;         /* tracks mobile browser chrome */
+	overflow: hidden;
+	background: var( --background-color-base, #fff );
+}
+
+.topbar,
+.feed-bar { flex: 0 0 auto; }
+
+.feed {
+	flex: 1 1 auto;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	/* keep the last card clear of the floating toolbar + iOS home bar */
+	padding-bottom: calc( 88px + env( safe-area-inset-bottom, 0px ) );
+}
+
+/* ---- top bar ---- */
+.topbar {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 10px;
+	padding-top: calc( 8px + env( safe-area-inset-top, 0px ) );
+	background: var( --background-color-neutral-subtle, #f8f9fa );
+	border-bottom: 1px solid var( --border-color-muted, #dadde3 );
+}
+
+.wordmark {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	justify-self: start;
+	padding-left: 4px;
+}
+
+.wordmark__text {
+	font-family: "Linux Libertine", Georgia, "Times New Roman", serif;
+	font-size: var( --font-size-large, 1.125rem );
+	letter-spacing: 0.04em;
+	color: var( --color-base, #202122 );
+}
+
+.wordmark__badge {
+	display: inline-grid;
+	place-items: center;
+	min-width: 22px;
+	height: 18px;
+	padding: 0 4px;
+	background: var( --background-color-progressive, #36c );
+	color: var( --color-inverted, #fff );
+	font-size: var( --font-size-x-small, 0.75rem );
+	font-weight: 700;
+	border-radius: 4px;
+	clip-path: polygon(0 25%, 25% 25%, 25% 0, 75% 0, 75% 25%, 100% 25%, 100% 75%, 75% 75%, 75% 100%, 25% 100%, 25% 75%, 0 75%);
+}
+
+.topbar__actions {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	justify-self: end;
+}
+
+/* ---- feed scope bar ---- */
+.feed-bar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 6px 8px;
+	background: var( --background-color-neutral-subtle, #f8f9fa );
+	border-bottom: 1px solid var( --border-color-muted, #dadde3 );
+}
+
+.feed-bar__scope {
+	font-size: var( --font-size-large, 1.125rem );
+	font-weight: 700;
+}
+
+/* ---- cards ---- */
+.card {
+	padding: 16px 16px 14px;
+	border-bottom: 1px solid var( --border-color-muted, #dadde3 );
+}
+
+.card__kicker {
+	margin: 0 0 10px;
+	font-size: var( --font-size-medium, 1rem );
+	font-weight: 700;
+	color: var( --color-subtle, #54595d );
+	line-height: 1.35;
+}
+
+.arrow { color: var( --color-subtle, #72777d ); font-weight: 400; }
+
+.card__headline { font-weight: 700; }
+.card__headline--alert { color: var( --color-destructive, #bf3c2c ); }
+.card__headline--alert-soft { color: var( --color-destructive, #bf3c2c ); font-weight: 400; }
+.card__headline--muted { color: var( --color-subtle, #54595d ); font-weight: 400; }
+
+.card__body {
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+.card__body-text { min-width: 0; }
+
+.card__subject {
+	margin: 0 0 4px;
+	font-size: var( --font-size-medium, 1rem );
+	color: var( --color-base, #202122 );
+}
+
+.card__subject b { font-weight: 700; }
+.muted { color: var( --color-subtle, #54595d ); }
+
+.who {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-weight: 700;
+}
+
+.who .cdx-icon { color: var( --color-base, #202122 ); }
+.dot { color: var( --color-subtle, #72777d ); margin: 0 2px; }
+
+.card__meta { margin: 4px 0 0; color: var( --color-subtle, #54595d ); font-size: var( --font-size-small, 0.875rem ); }
+.card__meta--strong { color: var( --color-base, #202122 ); }
+
+.card__excerpt {
+	margin: 2px 0 0;
+	color: var( --color-base, #202122 );
+	font-size: var( --font-size-medium, 1rem );
+	line-height: 1.4;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.card__title-link { margin: 0; font-size: var( --font-size-large, 1.125rem ); line-height: 1.35; }
+.card__title-link a { color: var( --color-progressive, #36c ); font-weight: 700; text-decoration: none; }
+.card__title-link a:hover { text-decoration: underline; }
+
+.thumb {
+	flex: 0 0 auto;
+	width: 64px;
+	height: 64px;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.thumb svg { display: block; width: 100%; height: 100%; }
+
+.card__actions {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 14px;
+}
+
+/* ---- floating bottom toolbar (no Codex equivalent — token-styled shell) ---- */
+.toolbar {
+	position: absolute;
+	left: 50%;
+	transform: translateX( -50% );
+	bottom: calc( 14px + env( safe-area-inset-bottom, 0px ) );
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	width: max-content;
+	max-width: calc( 100% - 24px );
+	padding: 5px 8px;
+	background: var( --background-color-neutral-subtle, #f8f9fa );
+	border: 1px solid var( --border-color-muted, #dadde3 );
+	border-radius: 999px;
+	box-shadow: 0 4px 16px rgba( 0, 0, 0, 0.18 );
+}
+
+/* ---- desktop / wide screens: show it inside a phone frame ---- */
+@media ( min-width: 600px ) {
+	body {
+		display: grid;
+		place-items: center;
+		min-height: 100dvh;
+		background: var( --background-color-neutral, #54595d );
+	}
+
+	.device {
+		width: 412px;
+		height: min( 880px, 94dvh );
+		border-radius: 28px;
+		overflow: hidden;
+		box-shadow: 0 12px 40px rgba( 0, 0, 0, 0.35 );
+	}
+
+	.app {
+		height: 100%;
+	}
+
+	.topbar { padding-top: 8px; }
+}
