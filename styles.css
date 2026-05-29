@@ -298,6 +298,19 @@ body {
 
 .feed-empty { padding: 32px 16px; text-align: center; color: var( --color-subtle, #54595d ); }
 
+/* ---- section heading within the translate feed (groups the suggestions) ---- */
+.xt-group {
+	margin: 0;
+	padding: 11px 16px 7px;
+	font-size: var( --font-size-x-small, 0.75rem );
+	font-weight: 700;
+	letter-spacing: 0.03em;
+	text-transform: uppercase;
+	color: var( --color-subtle, #54595d );
+	background: var( --background-color-neutral-subtle, #f8f9fa );
+	border-bottom: 1px solid var( --border-color-muted, #dadde3 );
+}
+
 /* ---- "translate anything" entry point (pinned atop the translate feed) ---- */
 /* Frames open-ended search as an empowering choice, not a utilitarian box:
    you are not limited to the suggestions, you can champion any article. */
