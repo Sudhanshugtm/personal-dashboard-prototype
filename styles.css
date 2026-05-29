@@ -226,24 +226,75 @@ body {
 	margin-top: 14px;
 }
 
-/* ---- activity filter: translation card metadata ---- */
-.xt-why { margin: 0 0 8px; }
+/* ---- activity filter: translation suggestion cards ---- */
+/* Reading order: thumbnail anchor + title + task (primary),
+   then impact reward (secondary), then effort + action. */
+.xt-card .card__body {
+	gap: 12px;
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+.xt-card .thumb { width: 56px; height: 56px; border-radius: 6px; }
+
+/* context: quiet, low weight */
+.xt-why { margin: 0 0 2px; }
 .xt-chip {
 	display: inline-block;
-	padding: 2px 8px;
+	padding: 1px 7px;
 	border-radius: 999px;
 	font-size: var( --font-size-x-small, 0.75rem );
-	font-weight: 600;
-	color: var( --color-subtle, #54595d );
-	background: var( --background-color-neutral, #eaecf0 );
+	font-weight: 500;
+	color: var( --color-subtle, #72777d );
+	background: transparent;
+	border: 1px solid var( --border-color-subtle, #e0e0e0 );
 }
-.xt-chip--you { color: var( --color-progressive, #36c ); background: var( --background-color-progressive-subtle, #f1f4fd ); }
+.xt-chip--you {
+	color: var( --color-progressive, #36c );
+	background: var( --background-color-progressive-subtle, #f1f4fd );
+	border-color: transparent;
+}
 
-.xt-card .card__langs { margin: 4px 0 4px; }
-.xt-missing { margin: 0; color: var( --color-base, #202122 ); }
-.xt-missing b { font-weight: 700; }
-.xt-meta { margin: 4px 0 0; color: var( --color-subtle, #54595d ); font-size: var( --font-size-small, 0.875rem ); }
-.xt-meta__time { color: var( --color-base, #202122 ); font-weight: 600; }
+/* primary: the article + the specific task */
+.xt-title {
+	margin: 0;
+	font-size: var( --font-size-large, 1.125rem );
+	line-height: 1.25;
+	font-weight: 700;
+	color: var( --color-base, #202122 );
+}
+.xt-task {
+	margin: 3px 0 0;
+	font-size: var( --font-size-medium, 1rem );
+	line-height: 1.35;
+	color: var( --color-subtle, #54595d );
+}
+.xt-task b { font-weight: 600; color: var( --color-base, #202122 ); }
+.xt-lang {
+	font-weight: 600;
+	color: var( --color-progressive, #36c );
+	white-space: nowrap;
+}
+
+/* secondary: the reward — real readership, warmly phrased */
+.xt-impact {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 10px 0 0;
+	color: var( --color-base, #202122 );
+	font-size: var( --font-size-small, 0.875rem );
+}
+.xt-impact b { font-weight: 700; }
+.xt-impact__icon { color: var( --color-progressive, #36c ); flex: 0 0 auto; }
+
+/* effort, paired with the action so size + cost read together */
+.xt-card .card__actions { align-items: center; gap: 12px; margin-top: 12px; }
+.xt-effort {
+	margin-right: auto;
+	color: var( --color-subtle, #72777d );
+	font-size: var( --font-size-small, 0.875rem );
+	font-weight: 600;
+}
 
 .feed-empty { padding: 32px 16px; text-align: center; color: var( --color-subtle, #54595d ); }
 
@@ -369,14 +420,56 @@ body {
 	bottom: calc( 14px + env( safe-area-inset-bottom, 0px ) );
 	display: flex;
 	align-items: center;
-	gap: 4px;
+	justify-content: space-between;
+	gap: 2px;
 	width: max-content;
 	max-width: calc( 100% - 24px );
-	padding: 5px 8px;
+	padding: 6px;
 	background: var( --background-color-neutral-subtle, #f8f9fa );
 	border: 1px solid var( --border-color-muted, #dadde3 );
 	border-radius: 999px;
 	box-shadow: 0 4px 16px rgba( 0, 0, 0, 0.18 );
+}
+
+/*
+	Make every toolbar item read as one consistent, quiet nav item — no nested
+	button-in-button capsule. We neutralise the Codex button chrome inside the
+	bar and let the toolbar itself be the single floating container.
+*/
+nav.toolbar .cdx-button,
+nav.toolbar .cdx-button:enabled {
+	min-width: 44px;
+	min-height: 44px;
+	padding: 0 12px;
+	font-weight: var( --font-weight-normal, 400 );
+	color: var( --color-subtle, #54595d );
+	background-color: transparent;
+	border-color: transparent;
+	border-radius: 999px;
+}
+
+nav.toolbar .cdx-button--icon-only {
+	padding: 0;
+	width: 44px;
+}
+
+nav.toolbar .cdx-button:enabled:hover {
+	background-color: var( --background-color-interactive-subtle--hover, #eaecf0 );
+	color: var( --color-base, #202122 );
+}
+
+/*
+	Active nav item ("Explore"): subtle, not a heavy grey capsule. A soft
+	progressive-tinted pill with a coloured icon + bolder label reads clearly
+	as the selected tab.
+*/
+nav.toolbar .cdx-button--is-active,
+nav.toolbar .cdx-button--is-active:enabled,
+nav.toolbar .cdx-button--is-active:enabled:hover {
+	color: var( --color-progressive, #36c );
+	font-weight: var( --font-weight-bold, 700 );
+	background-color: var( --background-color-progressive-subtle, #f1f4fd );
+	border-color: transparent;
 }
 
 /* ---- desktop / wide screens: show it inside a phone frame ---- */
