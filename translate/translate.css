@@ -42,7 +42,7 @@
 }
 .xt-card .thumb { width: 56px; height: 56px; border-radius: 6px; }
 
-/* context: quiet why-surfaced chip */
+/* the hook: a personal "why me, why this, why now" that opens the micro-story */
 .xt-why { margin: 0 0 2px; }
 .xt-chip {
 	display: inline-block;
@@ -78,17 +78,17 @@
 .xt-task b { font-weight: 600; color: var( --color-base, #202122 ); }
 .xt-lang { font-weight: 600; color: var( --color-progressive, #36c ); white-space: nowrap; }
 
-/* secondary: the reward — real readership */
+/* secondary: the human stakes — who is underserved right now, and what
+   the contributor's effort changes. A short micro-story, not a bare metric. */
 .xt-impact {
-	display: flex;
-	align-items: center;
-	gap: 6px;
+	display: block;
 	margin: 10px 0 0;
 	color: var( --color-base, #202122 );
 	font-size: var( --font-size-small, 0.875rem );
+	line-height: 1.45;
 }
 .xt-impact b { font-weight: 700; }
-.xt-impact__icon { color: var( --color-progressive, #36c ); flex: 0 0 auto; }
+.xt-impact__icon { color: var( --color-progressive, #36c ); display: inline-block; vertical-align: -3px; margin-right: 5px; }
 
 /* effort paired with the action */
 .xt-card .card__actions { align-items: center; gap: 12px; margin-top: 12px; }
