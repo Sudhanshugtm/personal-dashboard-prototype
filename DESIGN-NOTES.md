@@ -16,6 +16,18 @@ gives every card equal weight, and takes no stance on what matters now.
 | 2 | **Default to intent** | `/v2-stance/` | Lead with the user's primary intent, demote the rest | Clarity + conversion | We can infer primary intent | "Neutral, shows everything" feel |
 | 3 | **One thing today** | `/v3-hero/` | One hero next-action + compact "more" | Decisiveness, low cognitive load | One action can be confidently ranked #1 | Breadth/serendipity at a glance |
 | 4 | **Grouped sections** | `/v4-grouped/` | One scroll, but grouped under intent headers | Structure without hiding anything | Sections are scannable on mobile | Longer scroll; less "focus" |
+| 5 | **Translator journey** | `/translate/` | A feed of only Section Translation tasks, ordered as a journey | Momentum + repeat contribution | Translation is a primary intent for this user | Single-purpose; not a whole-dashboard answer |
+
+## Translator journey — the arc (variant 5)
+A feed made entirely of Section Translation (SX) suggestions, sequenced as a journey rather than a list. Card data mirrors the real SX suggestion shape (source article, source→target language, the *missing* section, an effort cue from section size, and the reason surfaced):
+
+1. **Land** — one easy, personalised pick ("because you edited it") to kill the cold start.
+2. **Flow** — quick wins + your-topic + popular (the real `mostpopular` / by-topic ranking modes).
+3. **Belong** — a collection with collective progress ("Colombian artists, 3 of 8").
+4. **Impact** — reads earned on your translations (CX's real impact signal).
+5. **Return** — a weekly goal / streak that pulls you back tomorrow.
+
+Grounded in the extension: suggestions come from cxserver `/suggest/sections` + the recommendation API (`/sections`, mostpopular, by topic/country/collection) and the `cx_significant_edits` recent-edits signal; the CTA can deep-link into the `/sx` flow with `sourceLanguage/targetLanguage/pageTitle` + section.
 
 How we'd know a direction worked: tap-through on the lead section, and the
 reader → first-contribution rate, beating the flat baseline.

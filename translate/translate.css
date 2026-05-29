@@ -1,0 +1,75 @@
+/* Translator journey — section-translation feed. Layered on ../styles.css. */
+
+.feed-bar__scope--static {
+	font-size: var( --font-size-large, 1.125rem );
+	font-weight: 700;
+	padding: 4px 2px;
+}
+
+/* progress / momentum header */
+.journey {
+	padding: 14px 16px;
+	background: var( --background-color-progressive-subtle, #f1f4fd );
+	border-bottom: 1px solid var( --border-color-muted, #dadde3 );
+}
+.journey__row { display: flex; align-items: baseline; justify-content: space-between; }
+.journey__title { margin: 0; font-weight: 700; font-size: var( --font-size-medium, 1rem ); color: var( --color-base, #202122 ); }
+.journey__impact { margin: 0; font-size: var( --font-size-small, 0.875rem ); color: var( --color-subtle, #54595d ); }
+.journey__impact b { color: var( --color-base, #202122 ); }
+.journey__hint { margin: 8px 0 0; font-size: var( --font-size-small, 0.875rem ); color: var( --color-progressive, #36c ); }
+
+/* progress bar (token-styled; Codex has no CSS-only progress) */
+.bar {
+	height: 8px;
+	margin-top: 10px;
+	border-radius: 999px;
+	background: var( --background-color-neutral, #eaecf0 );
+	overflow: hidden;
+}
+.bar--small { height: 6px; margin-top: 8px; }
+.bar__fill {
+	display: block;
+	height: 100%;
+	border-radius: 999px;
+	background: var( --background-color-progressive, #36c );
+}
+
+/* why-surfaced chip */
+.xt-why { margin: 0 0 8px; }
+.xt-chip {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: var( --font-size-x-small, 0.75rem );
+	font-weight: 600;
+	color: var( --color-subtle, #54595d );
+	background: var( --background-color-neutral, #eaecf0 );
+}
+.xt-chip--you { color: var( --color-progressive, #36c ); background: var( --background-color-progressive-subtle, #f1f4fd ); }
+.xt-chip--collection { color: #715099; background: #f3eefb; }
+
+/* translation card tweaks */
+.xt-card .card__langs { margin: 4px 0 6px; }
+.xt-missing { margin: 0; color: var( --color-base, #202122 ); }
+.xt-missing b { font-weight: 700; }
+.xt-card--lead { background: var( --background-color-progressive-subtle, #f1f4fd ); }
+
+/* collection card */
+.xt-collection { display: block; }
+.xt-collection .card__subject { margin: 0 0 4px; }
+.xt-next { margin: 10px 0 0; color: var( --color-subtle, #54595d ); font-size: var( --font-size-small, 0.875rem ); }
+.xt-next b { color: var( --color-base, #202122 ); }
+
+/* milestone close */
+.xt-milestone {
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+	margin: 14px 16px;
+	padding: 14px;
+	border: 1px dashed var( --border-color-base, #a2a9b1 );
+	border-radius: 10px;
+	background: var( --background-color-neutral-subtle, #f8f9fa );
+}
+.xt-milestone p { margin: 0; color: var( --color-base, #202122 ); }
+.xt-milestone__icon { color: var( --color-progressive, #36c ); flex: 0 0 auto; }

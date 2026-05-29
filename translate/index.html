@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<meta name="theme-color" content="#f8f9fa">
+	<title>Personal Dashboard — Translator journey</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-root.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-mode-dark.css" media="( prefers-color-scheme: dark )">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex@latest/dist/codex.style.css">
+	<link rel="stylesheet" href="../styles.css">
+	<link rel="stylesheet" href="translate.css">
+</head>
+<body>
+	<!--
+		EXPLORATION — Translator journey. A feed made entirely of Section
+		Translation (SX) suggestions, ordered as a journey: Land (easy
+		personalised pick) -> Flow (quick wins / your topics) -> Belong
+		(a collection) -> Impact (reads earned) -> Return (weekly goal).
+		Card data mirrors the real SX suggestion shape: source article,
+		source->target language, the MISSING section, an effort cue derived
+		from section size, and the reason it was surfaced.
+	-->
+	<div class="device">
+		<div class="app">
+
+			<header class="topbar" aria-label="Site header">
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Main menu"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 4h16M2 10h16M2 16h16" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
+				<div class="wordmark"><span class="wordmark__text">WIKIPEDIA</span><span class="wordmark__badge" aria-hidden="true">25</span></div>
+				<div class="topbar__actions">
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Search"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Notifications"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8a5 5 0 0 1 10 0c0 4 1.5 5 1.5 5h-13S5 12 5 8Z" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 16a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span></button>
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Your account"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3.2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M4 17c1-3.2 3.3-4.5 6-4.5s5 1.3 6 4.5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span></button>
+				</div>
+			</header>
+
+			<div class="feed-bar">
+				<span class="feed-bar__scope feed-bar__scope--static">Translate</span>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Choose languages"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
+			</div>
+
+			<main class="feed" aria-label="Section translation suggestions">
+
+				<!-- RETURN / progress: momentum at the top -->
+				<section class="journey" aria-label="Your weekly progress">
+					<div class="journey__row">
+						<p class="journey__title">3 of 5 this week</p>
+						<p class="journey__impact"><b>1,240</b> reads earned</p>
+					</div>
+					<div class="bar" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="5"><span class="bar__fill" style="width:60%"></span></div>
+					<p class="journey__hint">2 more sections to reach your weekly goal</p>
+				</section>
+
+				<!-- LAND: personalised, easy first step -->
+				<article class="card xt-card xt-card--lead">
+					<p class="xt-why"><span class="xt-chip xt-chip--you">Because you edited it</span></p>
+					<div class="card__body">
+						<div class="card__body-text">
+							<p class="card__subject"><b>Photosynthesis</b></p>
+							<p class="card__langs"><span class="lang-pill">English</span><span class="lang-arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span><span class="lang-pill lang-pill--target">Spanish</span></p>
+							<p class="xt-missing">Add the <b>Introduction</b> &middot; about 5 min</p>
+						</div>
+						<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#e3efe0"/><path d="M32 14c8 6 8 24 0 36-8-12-8-30 0-36Z" fill="#9fd29a"/><path d="M32 16v32M32 26c5-3 9-3 12-1M32 34c-5-3-9-3-12-1" stroke="#5a9b54" stroke-width="2" fill="none"/></svg></div>
+					</div>
+					<div class="card__actions"><button class="cdx-button cdx-button--action-progressive cdx-button--weight-primary">Start translating</button></div>
+				</article>
+
+				<!-- FLOW: quick win -->
+				<article class="card xt-card">
+					<p class="xt-why"><span class="xt-chip">Quick win</span></p>
+					<div class="card__body">
+						<div class="card__body-text">
+							<p class="card__subject"><b>Quinoa</b></p>
+							<p class="card__langs"><span class="lang-pill">English</span><span class="lang-arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span><span class="lang-pill lang-pill--target">Spanish</span></p>
+							<p class="xt-missing">Add the <b>Introduction</b> &middot; about 3 min</p>
+						</div>
+						<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#f3eede"/><circle cx="22" cy="26" r="5" fill="#d9c489"/><circle cx="34" cy="22" r="5" fill="#cdb673"/><circle cx="44" cy="28" r="5" fill="#d9c489"/><rect x="14" y="40" width="36" height="14" rx="3" fill="#cdb673"/></svg></div>
+					</div>
+					<div class="card__actions"><button class="cdx-button">Translate</button></div>
+				</article>
+
+				<!-- FLOW: matches your topic -->
+				<article class="card xt-card">
+					<p class="xt-why"><span class="xt-chip">Matches your interest &middot; Art</span></p>
+					<div class="card__body">
+						<div class="card__body-text">
+							<p class="card__subject"><b>Olga de Amaral</b></p>
+							<p class="card__langs"><span class="lang-pill">English</span><span class="lang-arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span><span class="lang-pill lang-pill--target">Spanish</span></p>
+							<p class="xt-missing">Add <b>Early life</b> &middot; about 4 min</p>
+						</div>
+						<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#efe7da"/><circle cx="32" cy="22" r="9" fill="#cdbba0"/><rect x="14" y="34" width="36" height="24" rx="3" fill="#cdbba0"/></svg></div>
+					</div>
+					<div class="card__actions"><button class="cdx-button">Translate</button></div>
+				</article>
+
+				<!-- FLOW: popular -->
+				<article class="card xt-card">
+					<p class="xt-why"><span class="xt-chip">Popular this week</span></p>
+					<div class="card__body">
+						<div class="card__body-text">
+							<p class="card__subject"><b>Cumbia</b></p>
+							<p class="card__langs"><span class="lang-pill">English</span><span class="lang-arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span><span class="lang-pill lang-pill--target">Spanish</span></p>
+							<p class="xt-missing">Add <b>History</b> &middot; about 8 min</p>
+						</div>
+						<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#e7e2ef"/><path d="M22 18v22a6 6 0 1 1-4-5.6V22l20-4v18a6 6 0 1 1-4-5.6V14l-12 4Z" fill="#b3a4cf"/></svg></div>
+					</div>
+					<div class="card__actions"><button class="cdx-button">Translate</button></div>
+				</article>
+
+				<!-- BELONG: a collection with collective progress -->
+				<article class="card xt-collection">
+					<p class="xt-why"><span class="xt-chip xt-chip--collection">Collection</span></p>
+					<p class="card__subject"><b>Colombian artists</b></p>
+					<p class="xt-missing">3 of 8 articles have a Spanish section</p>
+					<div class="bar bar--small" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="8"><span class="bar__fill" style="width:37.5%"></span></div>
+					<p class="xt-next">Next: <b>Fernando Botero</b> &middot; Add <b>Legacy</b> &middot; about 6 min</p>
+					<div class="card__actions"><button class="cdx-button">Continue collection</button></div>
+				</article>
+
+				<!-- RETURN: milestone close -->
+				<section class="xt-milestone" aria-label="Weekly milestone">
+					<span class="xt-milestone__icon cdx-icon cdx-icon--medium" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 1.8l2.5 5 5.5.8-4 3.9.9 5.5L10 14.4 5.1 17l.9-5.5-4-3.9 5.5-.8L10 1.8Z" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></span>
+					<p>Translate <b>2 more</b> to complete this week and unlock the <b>Latin American music</b> collection.</p>
+				</section>
+
+			</main>
+
+			<nav class="toolbar" aria-label="Dashboard tools">
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--is-active"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M2.5 10h15M10 2.5c2.5 2.5 2.5 12.5 0 15M10 2.5c-2.5 2.5-2.5 12.5 0 15" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></span>Explore</button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="History"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 5v5l3 2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3.5 10a6.5 6.5 0 1 0 1.9-4.6" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3 3v3h3" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Help"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7.7 7.6a2.3 2.3 0 1 1 3 2.2c-.8.3-1.2.8-1.2 1.7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="9.5" cy="14.2" r="0.9" fill="currentColor"/></svg></span></button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Settings"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M15.3 4.7l-1.4 1.4M6.1 13.9l-1.4 1.4" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span></button>
+			</nav>
+
+		</div>
+	</div>
+</body>
+</html>
