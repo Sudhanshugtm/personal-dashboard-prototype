@@ -310,6 +310,57 @@ body {
 .sheet__check { color: var( --color-progressive, #36c ); opacity: 0; }
 .sheet__opt--active .sheet__check { opacity: 1; }
 
+/* richer, intent-framed picker options */
+.sheet--rich .sheet__opt {
+	gap: 12px;
+	justify-content: flex-start;
+	padding: 10px 12px;
+	font-weight: 400;
+}
+.sheet__group {
+	margin: 12px 12px 2px;
+	font-size: var( --font-size-x-small, 0.75rem );
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: var( --color-subtle, #72777d );
+}
+.opt-icon {
+	flex: 0 0 auto;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+}
+.opt-icon svg { width: 20px; height: 20px; }
+.opt-icon--all { background: var( --background-color-neutral, #eaecf0 ); color: var( --color-subtle, #54595d ); }
+.opt-icon--edit { background: var( --background-color-progressive-subtle, #f1f4fd ); color: var( --color-progressive, #36c ); }
+.opt-icon--translate { background: #e3efe0; color: #3a7a3f; }
+.opt-icon--review { background: var( --background-color-warning-subtle, #fdf2d5 ); color: #9a6700; }
+.opt-icon--read { background: #f3eefb; color: #715099; }
+
+.opt-body { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
+.opt-label { font-weight: 700; color: var( --color-base, #202122 ); }
+.opt-sub { font-size: var( --font-size-small, 0.875rem ); color: var( --color-subtle, #54595d ); }
+
+.opt-count {
+	flex: 0 0 auto;
+	min-width: 22px;
+	padding: 0 6px;
+	text-align: center;
+	border-radius: 999px;
+	background: var( --background-color-neutral, #eaecf0 );
+	color: var( --color-subtle, #54595d );
+	font-size: var( --font-size-x-small, 0.75rem );
+	font-weight: 700;
+}
+.opt-check { flex: 0 0 auto; color: var( --color-progressive, #36c ); opacity: 0; }
+
+.sheet--rich .sheet__opt--active { background: var( --background-color-progressive-subtle, #f1f4fd ); }
+.sheet--rich .sheet__opt--active .opt-label { color: var( --color-progressive, #36c ); }
+.sheet--rich .sheet__opt--active .opt-check { opacity: 1; }
+
 /* ---- floating bottom toolbar (no Codex equivalent — token-styled shell) ---- */
 .toolbar {
 	position: absolute;
