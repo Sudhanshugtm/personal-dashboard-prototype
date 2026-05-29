@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#f8f9fa">
+	<title>Personal Dashboard — exploration gallery (T419358)</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-root.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-mode-dark.css" media="( prefers-color-scheme: dark )">
+	<link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+	<header class="g-header">
+		<h1>Personal Dashboard — exploration</h1>
+		<p>Unified "For You" dashboard for <a href="https://phabricator.wikimedia.org/T419358">T419358</a>. One baseline + variations on its structure. Same cards throughout — the <b>structure</b> is what's being tested. Open any on a phone for the real mobile feel.</p>
+	</header>
+
+	<main class="g-grid">
+
+		<section class="g-card">
+			<div class="g-card__meta"><span class="g-badge">0</span><div><h2>Baseline</h2><p class="g-bet">One flat "For You" feed across all intents — the control.</p></div></div>
+			<div class="g-frame"><iframe loading="lazy" title="Baseline" src="../"></iframe></div>
+			<a class="g-open" href="../" target="_blank" rel="noopener">Open baseline &rarr;</a>
+		</section>
+
+		<section class="g-card">
+			<div class="g-card__meta"><span class="g-badge">1</span><div><h2>Intent filter</h2><p class="g-bet">Chips collapse the feed to one mindset on demand. Focus, but the user does the sorting.</p></div></div>
+			<div class="g-frame"><iframe loading="lazy" title="Intent filter" src="../intent/"></iframe></div>
+			<a class="g-open" href="../intent/" target="_blank" rel="noopener">Open intent filter &rarr;</a>
+		</section>
+
+		<section class="g-card g-card--pick">
+			<div class="g-card__meta"><span class="g-badge">2</span><div><h2>Default to intent <span class="g-tag">recommended</span></h2><p class="g-bet">Leads with the user's primary intent; demotes the rest. Takes a stance instead of handing over a filter.</p></div></div>
+			<div class="g-frame"><iframe loading="lazy" title="Default to intent" src="../v2-stance/"></iframe></div>
+			<a class="g-open" href="../v2-stance/" target="_blank" rel="noopener">Open default-to-intent &rarr;</a>
+		</section>
+
+		<section class="g-card">
+			<div class="g-card__meta"><span class="g-badge">3</span><div><h2>One thing today</h2><p class="g-bet">A single hero next-action + compact "more". Decisive and low-load; less breadth at a glance.</p></div></div>
+			<div class="g-frame"><iframe loading="lazy" title="One thing today" src="../v3-hero/"></iframe></div>
+			<a class="g-open" href="../v3-hero/" target="_blank" rel="noopener">Open one-thing-today &rarr;</a>
+		</section>
+
+		<section class="g-card">
+			<div class="g-card__meta"><span class="g-badge">4</span><div><h2>Grouped sections</h2><p class="g-bet">One scroll, grouped under intent headers. Structure without hiding anything.</p></div></div>
+			<div class="g-frame"><iframe loading="lazy" title="Grouped sections" src="../v4-grouped/"></iframe></div>
+			<a class="g-open" href="../v4-grouped/" target="_blank" rel="noopener">Open grouped sections &rarr;</a>
+		</section>
+
+	</main>
+
+	<footer class="g-footer">
+		<p>Built on Wikimedia Codex (tokens + CSS-only components). See <a href="https://github.com/Sudhanshugtm/personal-dashboard-prototype/blob/main/DESIGN-NOTES.md">DESIGN-NOTES.md</a> for each variant's bet, tradeoffs, and open questions.</p>
+	</footer>
+</body>
+</html>

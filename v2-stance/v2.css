@@ -1,0 +1,72 @@
+/* Variant 2 — Default to intent (stance). Layered on ../styles.css. */
+
+.lead {
+	padding: 18px 16px 8px;
+}
+
+.lead__eyebrow {
+	margin: 0 0 4px;
+	font-size: var( --font-size-x-small, 0.75rem );
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: var( --color-subtle, #54595d );
+}
+
+.lead__title {
+	margin: 0 0 4px;
+	font-size: var( --font-size-x-large, 1.25rem );
+	line-height: 1.2;
+	color: var( --color-base, #202122 );
+}
+
+.lead__sub {
+	margin: 0;
+	color: var( --color-subtle, #54595d );
+}
+
+/* demoted section label */
+.section-label {
+	margin: 0;
+	padding: 18px 16px 6px;
+	font-size: var( --font-size-small, 0.875rem );
+	font-weight: 700;
+	color: var( --color-subtle, #54595d );
+}
+
+/* quiet (demoted) card */
+.card--quiet {
+	padding-top: 8px;
+	padding-bottom: 14px;
+}
+
+.card--quiet .card__kicker { margin-bottom: 6px; }
+
+/* moderation: quiet gated entry, visually subordinate to contribute */
+.mod-banner {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 8px 16px 4px;
+	padding: 12px 14px;
+	text-decoration: none;
+	color: var( --color-base, #202122 );
+	background: var( --background-color-neutral-subtle, #f8f9fa );
+	border: 1px solid var( --border-color-muted, #dadde3 );
+	border-radius: 8px;
+}
+
+.mod-banner:hover { background: var( --background-color-neutral, #eaecf0 ); }
+.mod-banner__icon { color: var( --color-subtle, #54595d ); }
+.mod-banner__text { display: flex; flex-direction: column; line-height: 1.25; flex: 1; }
+.mod-banner__text span { color: var( --color-subtle, #54595d ); font-size: var( --font-size-small, 0.875rem ); }
+.mod-banner__chev { color: var( --color-subtle, #72777d ); }
+
+.see-all {
+	display: block;
+	padding: 14px 16px 4px;
+	color: var( --color-progressive, #36c );
+	font-weight: 600;
+	text-decoration: none;
+}
+.see-all:hover { text-decoration: underline; }

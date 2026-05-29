@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<meta name="theme-color" content="#f8f9fa">
+	<title>Personal Dashboard — One thing today (v3)</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-root.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-mode-dark.css" media="( prefers-color-scheme: dark )">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex@latest/dist/codex.style.css">
+	<link rel="stylesheet" href="../styles.css">
+	<link rel="stylesheet" href="v3.css">
+</head>
+<body>
+	<!--
+		VARIANT 3 — One thing today (hero). Leads with a single, confidently
+		ranked next action as a full hero, then collapses everything else into a
+		compact "More for you" list. Duolingo / Todoist-Today stance: decisive,
+		low cognitive load. Risk: less breadth visible at a glance.
+	-->
+	<div class="device">
+		<div class="app">
+
+			<header class="topbar" aria-label="Site header">
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Main menu"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 4h16M2 10h16M2 16h16" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
+				<div class="wordmark"><span class="wordmark__text">WIKIPEDIA</span><span class="wordmark__badge" aria-hidden="true">25</span></div>
+				<div class="topbar__actions">
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Search"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Notifications"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8a5 5 0 0 1 10 0c0 4 1.5 5 1.5 5h-13S5 12 5 8Z" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M8 16a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span></button>
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Your account"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3.2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M4 17c1-3.2 3.3-4.5 6-4.5s5 1.3 6 4.5" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span></button>
+				</div>
+			</header>
+
+			<main class="feed" aria-label="Your dashboard">
+
+				<section class="hero" aria-labelledby="hero-h">
+					<p class="hero__eyebrow">Your next contribution &middot; about 5 min</p>
+					<div class="hero__art" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" rx="8" fill="#e3efe0"/><path d="M32 12c9 7 9 28 0 40-9-12-9-33 0-40Z" fill="#9fd29a"/><path d="M32 14v36M32 26c6-3 10-3 13-1M32 36c-6-3-10-3-13-1" stroke="#5a9b54" stroke-width="2.4" fill="none"/></svg></div>
+					<h1 class="hero__title" id="hero-h">Translate the intro of <b>Photosynthesis</b> into Spanish</h1>
+					<p class="hero__langs">
+						<span class="lang-pill">English</span>
+						<span class="lang-arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
+						<span class="lang-pill lang-pill--target">Spanish</span>
+						<span class="hero__why">not yet in Spanish</span>
+					</p>
+					<div class="hero__actions">
+						<button class="cdx-button cdx-button--action-progressive cdx-button--weight-primary">Start translating</button>
+						<button class="cdx-button cdx-button--weight-quiet">Skip</button>
+					</div>
+				</section>
+
+				<h2 class="more-label">More for you</h2>
+				<ul class="more-list">
+					<li class="more-row">
+						<span class="more-row__icon cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M4 4h12v12l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L4 16V4Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
+						<span class="more-row__text"><b>Revise tone</b> on Olga de Amaral<span class="more-row__sub">Suggested edit</span></span>
+						<span class="more-row__chev cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
+					</li>
+					<li class="more-row">
+						<span class="more-row__icon cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 3h10v15l-5-3.2L5 18V3Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
+						<span class="more-row__text"><b>Choose Your Own Adventure books</b><span class="more-row__sub">From your reading list</span></span>
+						<span class="more-row__chev cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
+					</li>
+					<li class="more-row more-row--alert">
+						<span class="more-row__icon cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2l8 14H2L10 2Z" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M10 8v3.5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="14" r="0.9" fill="currentColor"/></svg></span>
+						<span class="more-row__text"><b>Review a tone issue</b> on Gorillaz<span class="more-row__sub">Patrolling &middot; 2 items waiting</span></span>
+						<span class="more-row__chev cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
+					</li>
+				</ul>
+
+			</main>
+
+			<nav class="toolbar" aria-label="Dashboard tools">
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--is-active"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M2.5 10h15M10 2.5c2.5 2.5 2.5 12.5 0 15M10 2.5c-2.5 2.5-2.5 12.5 0 15" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></span>Explore</button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="History"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 5v5l3 2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3.5 10a6.5 6.5 0 1 0 1.9-4.6" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3 3v3h3" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Help"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7.7 7.6a2.3 2.3 0 1 1 3 2.2c-.8.3-1.2.8-1.2 1.7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="9.5" cy="14.2" r="0.9" fill="currentColor"/></svg></span></button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Settings"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M15.3 4.7l-1.4 1.4M6.1 13.9l-1.4 1.4" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span></button>
+			</nav>
+
+		</div>
+	</div>
+</body>
+</html>
