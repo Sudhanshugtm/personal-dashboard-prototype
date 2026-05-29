@@ -298,6 +298,39 @@ body {
 
 .feed-empty { padding: 32px 16px; text-align: center; color: var( --color-subtle, #54595d ); }
 
+/* ---- "translate anything" entry point (pinned atop the translate feed) ---- */
+/* Frames open-ended search as an empowering choice, not a utilitarian box:
+   you are not limited to the suggestions, you can champion any article. */
+.xt-search {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
+	padding: 14px 16px;
+	border: 0;
+	border-bottom: 1px solid var( --border-color-muted, #dadde3 );
+	background: var( --background-color-progressive-subtle, #f1f4fd );
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+}
+.xt-search:hover { background: #e6ecfb; }
+.xt-search__icon {
+	flex: 0 0 auto;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	display: grid;
+	place-items: center;
+	background: var( --background-color-base, #fff );
+	color: var( --color-progressive, #36c );
+}
+.xt-search__icon svg { width: 20px; height: 20px; }
+.xt-search__text { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
+.xt-search__label { font-weight: 700; color: var( --color-base, #202122 ); }
+.xt-search__sub { font-size: var( --font-size-small, 0.875rem ); color: var( --color-subtle, #54595d ); }
+.xt-search__chev { flex: 0 0 auto; color: var( --color-subtle, #72777d ); }
+
 /* ---- activity filter: bottom sheet ---- */
 .sheet-backdrop {
 	position: absolute;

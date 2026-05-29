@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<meta name="theme-color" content="#f8f9fa">
+	<title>New translation</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-root.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-mode-dark.css" media="( prefers-color-scheme: dark )">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex@latest/dist/codex.style.css">
+	<link rel="stylesheet" href="../styles.css">
+	<link rel="stylesheet" href="new.css">
+</head>
+<body>
+	<!--
+		New translation — pick ANY article to translate, modelled on the real CX
+		"New translation" flow. Two views in one shell:
+		1) SEARCH: a personal "Recently edited by you" empty state, and a live
+		   filter over an in-memory list as you type.
+		2) PREVIEW: the screen that sells the value — reach (read a lot) + gap
+		   (thin or missing in your language), so the contributor sees why their
+		   work matters before they start. The primary action routes into the SX
+		   editor, whose own section picker takes it from there.
+		Every article here exists in the SX editor DATA, so nothing dead-ends.
+	-->
+	<div class="device">
+		<div class="app">
+
+			<!-- ===== SEARCH VIEW ===== -->
+			<div class="nt-view" id="nt-search">
+				<header class="sx-bar">
+					<a class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" href="../" aria-label="Close">
+						<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" fill="none"/></svg></span>
+					</a>
+					<h4 class="sx-bar__title">New translation</h4>
+					<span class="nt-bar__spacer" aria-hidden="true"></span>
+				</header>
+
+				<div class="nt-searchrow">
+					<span class="nt-searchrow__icon cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M13 13l4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
+					<input id="nt-input" class="nt-searchrow__input" type="search" autocomplete="off" placeholder="Search for a page to translate" aria-label="Search for a page to translate">
+				</div>
+
+				<div class="nt-langtabs" aria-label="Source language">
+					<button class="nt-langtab nt-langtab--active">English</button>
+					<button class="nt-langtab nt-langtab--more" aria-label="More source languages">
+						<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="4" cy="10" r="1.5" fill="currentColor"/><circle cx="10" cy="10" r="1.5" fill="currentColor"/><circle cx="16" cy="10" r="1.5" fill="currentColor"/></svg></span>
+					</button>
+				</div>
+
+				<main class="feed nt-results" aria-label="Articles to translate">
+					<p class="nt-section-label" id="nt-section-label">Recently edited by you</p>
+					<div id="nt-list"></div>
+					<p class="nt-empty" id="nt-noresults" hidden>No pages match that yet. Try another title.</p>
+				</main>
+			</div>
+
+			<!-- ===== PREVIEW VIEW ===== -->
+			<div class="nt-view" id="nt-preview" hidden>
+				<header class="sx-bar">
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" id="nt-preview-back" aria-label="Back to search">
+						<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 4l-6 6 6 6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg></span>
+					</button>
+					<h4 class="sx-bar__title">New translation</h4>
+					<a class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" href="../" aria-label="Close">
+						<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" fill="none"/></svg></span>
+					</a>
+				</header>
+
+				<main class="feed nt-preview-body" aria-label="Article preview">
+					<div class="nt-hero" id="nt-hero" aria-hidden="true"></div>
+
+					<div class="nt-preview-head">
+						<a class="nt-preview-title" id="nt-preview-title" href="#" target="_blank" rel="noopener">
+							<span id="nt-preview-title-text">Jaipur</span>
+							<span class="cdx-icon cdx-icon--x-small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M8 5H5v10h10v-3M12 4h4v4M16 4l-7 7" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
+						</a>
+						<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only nt-save" aria-label="Save for later">
+							<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3h10v15l-5-3.2L5 18V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>
+						</button>
+					</div>
+					<p class="nt-preview-desc" id="nt-preview-desc"></p>
+
+					<!-- VALUE METADATA: exists in N languages + how much it is read -->
+					<div class="nt-value">
+						<span class="nt-value__item">
+							<span class="nt-value__badge" aria-hidden="true">文<sub>A</sub></span>
+							<b id="nt-value-langs">125</b> languages
+						</span>
+						<span class="nt-value__sep" aria-hidden="true"></span>
+						<span class="nt-value__item">
+							<span class="nt-value__icon cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 4C5 4 1.7 8.2 1 10c.7 1.8 4 6 9 6s8.3-4.2 9-6c-.7-1.8-4-6-9-6Z" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="10" cy="10" r="2.6" fill="currentColor"/></svg></span>
+							Read <b id="nt-value-reach">6,000</b> times a week
+						</span>
+					</div>
+
+					<!-- language direction -->
+					<div class="nt-dir">
+						<button class="nt-dir__lang">English</button>
+						<span class="nt-dir__arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h13M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
+						<button class="nt-dir__lang nt-dir__lang--target" id="nt-dir-target">Spanish</button>
+					</div>
+
+					<!-- the gap: what is there, what is missing -->
+					<div class="nt-gap" id="nt-gap"></div>
+
+					<div class="nt-preview-cta">
+						<button class="cdx-button cdx-button--action-progressive cdx-button--weight-primary nt-start" id="nt-start">Select section to translate</button>
+						<p class="nt-license">Your translation is published under the same free license as Wikipedia, so anyone can read and reuse it.</p>
+					</div>
+				</main>
+			</div>
+
+		</div>
+	</div>
+
+	<script>
+	( function () {
+		// Articles a user can land on. Each one exists in the SX editor DATA, so
+		// "Select section to translate" always opens real content. "target"
+		// stays Spanish ("es") to match the editor's drafted sentences.
+		// langs = how many languages it exists in (CX "文A N").
+		// reach = readable weekly reads. gap describes what is missing in target.
+		var TARGET = 'Spanish';
+		var ARTICLES = [
+			{
+				title: 'Jaipur', desc: 'Capital of the Indian state of Rajasthan',
+				langs: 125, reach: '6,000', recent: true, exists: true,
+				gap: { has: true, missing: 'Etymology', more: 12 }, hero: 'jaipur'
+			},
+			{
+				title: 'Photosynthesis', desc: 'Process used by plants to convert light into energy',
+				langs: 162, reach: '24,000', recent: true, exists: false,
+				gap: { has: false }, hero: 'leaf'
+			},
+			{
+				title: 'Quinoa', desc: 'Andean grain crop grown for its edible seeds',
+				langs: 88, reach: '9,000', recent: true, exists: true,
+				gap: { has: true, missing: 'Introduction', more: 3 }, hero: 'grain'
+			},
+			{
+				title: 'Olga de Amaral', desc: 'Colombian textile and visual artist',
+				langs: 11, reach: '1,200', recent: false, exists: true,
+				gap: { has: true, missing: 'Early life', more: 2 }, hero: 'art'
+			},
+			{
+				title: 'Cumbia', desc: 'Music genre from the Caribbean coast of Colombia',
+				langs: 42, reach: '31,000', recent: false, exists: false,
+				gap: { has: false }, hero: 'music'
+			}
+		];
+
+		// inline hero artwork keyed by article, so the preview reads offline
+		var HEROES = {
+			jaipur: '<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#f4d9d2"/><rect y="120" width="320" height="60" fill="#e8b9ac"/><path d="M40 120V70l20-16 20 16v50zM120 120V60l24-18 24 18v60zM216 120V72l22-16 22 16v48z" fill="#d98c78"/><path d="M64 70a4 4 0 0 1 8 0v14h-8zM140 64a4 4 0 0 1 8 0v18h-8zM230 72a4 4 0 0 1 8 0v14h-8z" fill="#f4d9d2"/><circle cx="270" cy="38" r="16" fill="#f0c14b"/></svg>',
+			leaf: '<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#e3efe0"/><path d="M160 30c40 30 40 110 0 130-40-20-40-100 0-130Z" fill="#9fd29a"/><path d="M160 36v118M160 70c24-14 44-14 58-4M160 104c-24-14-44-14-58-4" stroke="#5a9b54" stroke-width="6" fill="none"/></svg>',
+			grain: '<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#f3eede"/><circle cx="110" cy="80" r="26" fill="#d9c489"/><circle cx="168" cy="64" r="26" fill="#cdb673"/><circle cx="222" cy="86" r="26" fill="#d9c489"/><rect x="70" y="120" width="180" height="44" rx="8" fill="#cdb673"/></svg>',
+			art: '<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#efe7da"/><circle cx="160" cy="62" r="34" fill="#cdbba0"/><rect x="92" y="104" width="136" height="64" rx="8" fill="#cdbba0"/></svg>',
+			music: '<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="#e7e2ef"/><path d="M120 50v70a18 18 0 1 1-12-17V62l84-16v60a18 18 0 1 1-12-17V42l-60 8Z" fill="#b3a4cf"/></svg>'
+		};
+
+		function thumbSvg( hero ) {
+			// small 64px version reusing the same palette as the feed thumbs
+			var map = {
+				jaipur: '<svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#f4d9d2"/><path d="M14 50V30l9-7 9 7v20zM40 50V26l9-7 9 7v24z" fill="#d98c78"/><circle cx="50" cy="14" r="6" fill="#f0c14b"/></svg>',
+				leaf: '<svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#e3efe0"/><path d="M32 14c8 6 8 24 0 36-8-12-8-30 0-36Z" fill="#9fd29a"/><path d="M32 16v32M32 26c5-3 9-3 12-1M32 34c-5-3-9-3-12-1" stroke="#5a9b54" stroke-width="2" fill="none"/></svg>',
+				grain: '<svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#f3eede"/><circle cx="22" cy="26" r="5" fill="#d9c489"/><circle cx="34" cy="22" r="5" fill="#cdb673"/><circle cx="44" cy="28" r="5" fill="#d9c489"/><rect x="14" y="40" width="36" height="14" rx="3" fill="#cdb673"/></svg>',
+				art: '<svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#efe7da"/><circle cx="32" cy="22" r="9" fill="#cdbba0"/><rect x="14" y="34" width="36" height="24" rx="3" fill="#cdbba0"/></svg>',
+				music: '<svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#e7e2ef"/><path d="M22 18v22a6 6 0 1 1-4-5.6V22l20-4v18a6 6 0 1 1-4-5.6V14l-12 4Z" fill="#b3a4cf"/></svg>'
+			};
+			return map[ hero ] || map.leaf;
+		}
+
+		var list = document.getElementById( 'nt-list' );
+		var input = document.getElementById( 'nt-input' );
+		var sectionLabel = document.getElementById( 'nt-section-label' );
+		var noResults = document.getElementById( 'nt-noresults' );
+
+		function row( a ) {
+			var btn = document.createElement( 'button' );
+			btn.className = 'nt-row';
+			btn.innerHTML =
+				'<span class="nt-row__thumb thumb" aria-hidden="true">' + thumbSvg( a.hero ) + '</span>' +
+				'<span class="nt-row__text">' +
+					'<span class="nt-row__title">' + a.title + '</span>' +
+					'<span class="nt-row__desc">' + a.desc + '</span>' +
+				'</span>' +
+				'<span class="nt-row__langs" aria-label="' + a.langs + ' languages">' +
+					'<span class="nt-row__langbadge" aria-hidden="true">文<sub>A</sub></span>' + a.langs +
+				'</span>';
+			btn.addEventListener( 'click', function () { openPreview( a ); } );
+			return btn;
+		}
+
+		function render( query ) {
+			var q = ( query || '' ).trim().toLowerCase();
+			var items;
+			if ( q === '' ) {
+				sectionLabel.textContent = 'Recently edited by you';
+				sectionLabel.hidden = false;
+				items = ARTICLES.filter( function ( a ) { return a.recent; } );
+			} else {
+				sectionLabel.hidden = true;
+				items = ARTICLES.filter( function ( a ) {
+					return a.title.toLowerCase().indexOf( q ) !== -1 ||
+						a.desc.toLowerCase().indexOf( q ) !== -1;
+				} );
+			}
+			list.innerHTML = '';
+			items.forEach( function ( a ) { list.appendChild( row( a ) ); } );
+			noResults.hidden = !( q !== '' && items.length === 0 );
+		}
+
+		input.addEventListener( 'input', function () { render( input.value ); } );
+
+		// ----- preview -----
+		var searchView = document.getElementById( 'nt-search' );
+		var previewView = document.getElementById( 'nt-preview' );
+		var heroEl = document.getElementById( 'nt-hero' );
+		var titleText = document.getElementById( 'nt-preview-title-text' );
+		var titleLink = document.getElementById( 'nt-preview-title' );
+		var descEl = document.getElementById( 'nt-preview-desc' );
+		var langsEl = document.getElementById( 'nt-value-langs' );
+		var reachEl = document.getElementById( 'nt-value-reach' );
+		var gapEl = document.getElementById( 'nt-gap' );
+		var targetEl = document.getElementById( 'nt-dir-target' );
+		var startBtn = document.getElementById( 'nt-start' );
+		var current = null;
+
+		function gapMarkup( a ) {
+			if ( a.gap.has ) {
+				return '<p class="nt-gap__line nt-gap__line--has">' +
+						'<span class="nt-gap__icon cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M4 10l4 4 8-9" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></span>' +
+						'Available in ' + TARGET +
+						'<a class="nt-gap__ext" href="#" aria-label="Open the ' + TARGET + ' article"><span class="cdx-icon cdx-icon--x-small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 5H5v10h10v-3M12 4h4v4M16 4l-7 7" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span></a>' +
+					'</p>' +
+					'<p class="nt-gap__line nt-gap__line--add">' +
+						'<span class="nt-gap__icon cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></span>' +
+						'Expand it with <b>' + a.gap.missing + '</b> and ' + a.gap.more + ' more sections people still cannot read in ' + TARGET +
+					'</p>';
+			}
+			return '<p class="nt-gap__line nt-gap__line--first">' +
+					'<span class="nt-gap__icon cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2l2.2 4.6L17 7.3l-3.5 3.4.8 4.8L10 13.2 5.7 15.5l.8-4.8L3 7.3l4.8-.7L10 2Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>' +
+					'Not yet in ' + TARGET + '. <b>Be the first</b> to bring it to readers in their language.' +
+				'</p>';
+		}
+
+		function openPreview( a ) {
+			current = a;
+			heroEl.innerHTML = HEROES[ a.hero ] || HEROES.leaf;
+			titleText.textContent = a.title;
+			titleLink.href = 'https://en.wikipedia.org/wiki/' + encodeURIComponent( a.title.replace( / /g, '_' ) );
+			descEl.textContent = a.desc;
+			langsEl.textContent = a.langs;
+			reachEl.textContent = a.reach;
+			targetEl.textContent = TARGET;
+			gapEl.innerHTML = gapMarkup( a );
+			searchView.hidden = true;
+			previewView.hidden = false;
+			previewView.querySelector( '.nt-preview-body' ).scrollTop = 0;
+		}
+
+		document.getElementById( 'nt-preview-back' ).addEventListener( 'click', function () {
+			previewView.hidden = true;
+			searchView.hidden = false;
+		} );
+
+		startBtn.addEventListener( 'click', function () {
+			if ( !current ) { return; }
+			location.href = '../sx/?title=' + encodeURIComponent( current.title ) +
+				'&from=English&to=' + encodeURIComponent( TARGET );
+		} );
+
+		render( '' );
+	}() );
+	</script>
+</body>
+</html>
