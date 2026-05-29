@@ -138,27 +138,21 @@
 	flex: 0 0 auto;
 	display: inline-flex;
 	align-items: center;
-	gap: 3px;
+	gap: 7px;
+	padding-left: 8px;
 	font-size: var( --font-size-x-small, 0.75rem );
 	font-weight: 700;
 	color: var( --color-subtle, #54595d );
 }
-.nt-row__langbadge,
-.nt-value__badge {
-	display: inline-grid;
-	place-items: center;
-	min-width: 20px;
-	height: 18px;
-	padding: 0 3px;
-	border-radius: 4px;
-	background: var( --background-color-neutral, #eaecf0 );
-	color: var( --color-subtle, #54595d );
-	font-size: 0.7rem;
-	font-weight: 700;
-	line-height: 1;
+/* a clean single translate icon, no boxed 文/A stacking */
+.nt-row__langicon,
+.nt-value__langicon {
+	display: inline-flex;
+	align-items: center;
+	color: var( --color-subtle, #72777d );
 }
-.nt-row__langbadge sub,
-.nt-value__badge sub { font-size: 0.55em; }
+.nt-row__langicon svg,
+.nt-value__langicon svg { display: block; width: 16px; height: 16px; }
 
 .nt-empty { padding: 28px 16px; text-align: center; color: var( --color-subtle, #54595d ); }
 .nt-empty[hidden] { display: none; }
