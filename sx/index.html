@@ -28,7 +28,7 @@
 				<a class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" href="../" aria-label="Close">
 					<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 4l-6 6 6 6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg></span>
 				</a>
-				<h4 class="sx-bar__title">Translation</h4>
+				<h4 class="sx-bar__title">Translate section</h4>
 				<button class="cdx-button" id="sx-done" disabled>Done</button>
 			</header>
 
@@ -64,20 +64,23 @@
 			<!-- bottom "Suggested translation" card for the current sentence -->
 			<section class="sx-suggest" id="sx-suggest" aria-label="Suggested translation">
 				<div class="sx-suggest__head">
-					<h5 class="sx-suggest__title">Suggested translation</h5>
+					<h5 class="sx-suggest__title">Suggested translation from MinT</h5>
 					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" id="sx-gear" aria-label="Translation options">
-						<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M15.3 4.7l-1.4 1.4M6.1 13.9l-1.4 1.4" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></span>
+						<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="4" cy="10" r="1.5" fill="currentColor"/><circle cx="10" cy="10" r="1.5" fill="currentColor"/><circle cx="16" cy="10" r="1.5" fill="currentColor"/></svg></span>
 					</button>
 				</div>
+				<p class="sx-original" id="sx-original" hidden></p>
 				<div class="sx-suggest__mt" id="sx-mt"></div>
-				<p class="sx-hint" id="sx-hint" aria-live="polite">Machine translation only gets you started. Read this line, fix anything that sounds off, then add it.</p>
+				<p class="sx-hint" id="sx-hint" aria-live="polite">Machine translation only gets you started. Read this line, fix anything that sounds off, then apply it.</p>
 				<button class="cdx-button cdx-button--weight-quiet cdx-button--action-progressive sx-suggest__edit" id="sx-edit">
 					<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M13.5 3.5l3 3L7 16l-4 1 1-4 9.5-9.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
 					Edit translation
 				</button>
 				<div class="sx-suggest__actions">
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" id="sx-prev" aria-label="Previous sentence"><span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 4l-6 6 6 6" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
+					<button class="cdx-button sx-apply" id="sx-apply">Apply</button>
 					<button class="cdx-button cdx-button--weight-quiet" id="sx-skip">Skip</button>
-					<button class="cdx-button cdx-button--action-progressive cdx-button--weight-primary" id="sx-add">Add translation</button>
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" id="sx-next" aria-label="Next sentence"><span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M8 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
 				</div>
 			</section>
 
@@ -194,7 +197,7 @@
 		function setTaskNote() {
 			tasknoteText.innerHTML =
 				'Translating the <b>' + section.en + '</b> of <b>' + title + '</b> into ' + toLang +
-				'. It comes machine-drafted, so read every line and improve it before you add it. ' +
+				'. It comes machine-drafted, so read every line and improve it before you apply it. ' +
 				'<span class="sx-tasknote__time">~' + Math.max( 2, Math.round( segs.length * 1.3 ) ) + ' min</span>';
 		}
 
@@ -227,6 +230,7 @@
 			} );
 		}
 
+		var originalEl = document.getElementById( 'sx-original' );
 		function renderSuggest() {
 			var allDone = firstPending() === -1;
 			suggestEl.hidden = allDone;
@@ -234,6 +238,7 @@
 			mtEl.textContent = state[ current ].text;
 			mtEl.removeAttribute( 'contenteditable' );
 			mtEl.classList.remove( 'is-editing' );
+			originalEl.hidden = true;                            // reference shows only while editing
 		}
 
 		function renderAll() { renderPara(); renderSuggest(); }
@@ -251,8 +256,8 @@
 			if ( hint ) { hint.remove(); }
 			var remaining = state.filter( function ( s ) { return !s.added; } ).length;
 			cheerEl.textContent = remaining > 0
-				? 'That line is reviewed and added. ' + remaining + ' to go.'
-				: 'That line is reviewed and added. Tap Done to publish.';
+				? 'That line is reviewed and applied. ' + remaining + ' to go.'
+				: 'That line is reviewed and applied. Tap Done to publish.';
 			cheerEl.hidden = false;
 			requestAnimationFrame( function () { cheerEl.classList.add( 'is-open' ); } );
 		}
@@ -261,7 +266,7 @@
 			document.getElementById( 'sx-tasknote' ).remove();
 		} );
 
-		document.getElementById( 'sx-add' ).addEventListener( 'click', function () {
+		document.getElementById( 'sx-apply' ).addEventListener( 'click', function () {
 			if ( firstAddDone ) { hideCheer(); }
 			state[ current ].added = true;
 			doneBtn.disabled = false;
@@ -281,7 +286,22 @@
 			scrollCurrentIntoView();
 		} );
 
+		document.getElementById( 'sx-prev' ).addEventListener( 'click', function () {
+			hideCheer();
+			current = ( current - 1 + segs.length ) % segs.length;
+			renderAll();
+			scrollCurrentIntoView();
+		} );
+		document.getElementById( 'sx-next' ).addEventListener( 'click', function () {
+			hideCheer();
+			current = ( current + 1 ) % segs.length;
+			renderAll();
+			scrollCurrentIntoView();
+		} );
+
 		document.getElementById( 'sx-edit' ).addEventListener( 'click', function () {
+			originalEl.textContent = segs[ current ][ 0 ];        // pin the source as reference
+			originalEl.hidden = false;
 			mtEl.setAttribute( 'contenteditable', 'true' );
 			mtEl.classList.add( 'is-editing' );
 			mtEl.focus();
