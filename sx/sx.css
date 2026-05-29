@@ -82,19 +82,53 @@
 	font-size: var( --font-size-small, 0.875rem );
 }
 .sx-article-link:hover { text-decoration: underline; }
-.sx-section-row {
+/* persistent source -> target direction indicator */
+.sx-dir {
 	display: flex;
-	align-items: baseline;
-	justify-content: space-between;
-	gap: 12px;
-	margin-top: 6px;
+	align-items: center;
+	gap: 8px;
+	margin-top: 8px;
+	flex-wrap: wrap;
 }
+.sx-dir__lang {
+	display: inline-flex;
+	align-items: baseline;
+	gap: 4px;
+	padding: 3px 8px;
+	border-radius: 12px;
+	font-size: var( --font-size-small, 0.875rem );
+	line-height: 1.2;
+}
+.sx-dir__role {
+	font-size: var( --font-size-x-small, 0.75rem );
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	font-weight: 700;
+	opacity: 0.75;
+}
+.sx-dir__name { font-weight: 600; }
+/* "From" reads as the muted original; "Into" reads as the target you build */
+.sx-dir__lang--from {
+	background: var( --background-color-neutral-subtle, #f8f9fa );
+	color: var( --color-subtle, #54595d );
+	border: 1px solid var( --border-color-muted, #dadde3 );
+}
+.sx-dir__lang--to {
+	background: var( --background-color-progressive-subtle, #f1f4fd );
+	color: var( --color-progressive, #36c );
+	border: 1px solid var( --border-color-progressive-subtle, #cbd6f6 );
+}
+.sx-dir__arrow { color: var( --color-subtle, #72777d ); flex: 0 0 auto; }
+.sx-dir .sx-change { margin-left: auto; }
+
 .sx-section-title {
-	margin: 0;
+	margin: 0 0 6px;
 	font-size: var( --font-size-x-large, 1.25rem );
 	line-height: 1.25;
 	color: var( --color-base, #202122 );
 }
+/* the title is the first translatable unit: while pending it reads as original */
+.sx-section-title.is-pending { font-weight: 600; }
 .sx-change {
 	flex: 0 0 auto;
 	display: inline-flex;

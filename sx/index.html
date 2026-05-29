@@ -15,11 +15,17 @@
 	<!--
 		Section Translation editor (SX), faithful to the extension's
 		SXSentenceSelector + SXSectionSelector flow. The section content fills in
-		as you go, the current sentence is highlighted, and a "Suggested
-		translation" card proposes the machine translation for that one sentence
+		as you go, the current unit is highlighted, and a "Suggested
+		translation" card proposes the machine translation for that one unit
 		with Edit / Add / Skip and an MT-provider picker. You can also change
 		which section you translate. Copy encourages reviewing and improving the
 		machine output, not accepting it blindly.
+
+		The section title is the FIRST translatable unit, shown in the source
+		language until applied (faithful to the real flow). Everything pending is
+		the original; everything applied is what the user is building in the
+		target language. A persistent source -> target indicator keeps the two
+		languages unmistakable.
 	-->
 	<div class="device">
 		<div class="app sx-app">
@@ -44,27 +50,31 @@
 			<!-- onboarding: brief positive feedback after the first reviewed sentence -->
 			<div class="sx-cheer" id="sx-cheer" role="status" aria-live="polite" hidden></div>
 
-			<main class="sx-content" aria-label="Section being translated">
+			<main class="sx-content" aria-label="Section you are building in the target language">
 				<div class="sx-content-header">
 					<a class="sx-article-link" id="sx-article-link" href="#" target="_blank" rel="noopener">
 						<strong id="sx-article">Photosynthesis</strong>
 						<span class="cdx-icon cdx-icon--x-small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M8 5H5v10h10v-3M12 4h4v4M16 4l-7 7" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
 					</a>
-					<div class="sx-section-row">
-						<h2 class="sx-section-title" id="sx-section-title">Introducción</h2>
+					<!-- persistent source -> target direction so the two languages are never confused -->
+					<div class="sx-dir">
+						<span class="sx-dir__lang sx-dir__lang--from"><span class="sx-dir__role">From</span><span class="sx-dir__name" id="sx-dir-from">English</span></span>
+						<span class="sx-dir__arrow cdx-icon cdx-icon--x-small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h13M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
+						<span class="sx-dir__lang sx-dir__lang--to"><span class="sx-dir__role">Into</span><span class="sx-dir__name" id="sx-dir-to">Spanish</span></span>
 						<button class="sx-change" id="sx-change">
 							Change section
 							<span class="cdx-icon cdx-icon--x-small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
 						</button>
 					</div>
 				</div>
+				<h2 class="sx-section-title" id="sx-section-title"></h2>
 				<p class="sx-para" id="sx-para"></p>
 			</main>
 
 			<!-- bottom "Suggested translation" card for the current sentence -->
 			<section class="sx-suggest" id="sx-suggest" aria-label="Suggested translation">
 				<div class="sx-suggest__head">
-					<h5 class="sx-suggest__title">Suggested translation from MinT</h5>
+					<h5 class="sx-suggest__title" id="sx-suggest-title">Suggested translation from MinT</h5>
 					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" id="sx-gear" aria-label="Translation options">
 						<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="4" cy="10" r="1.5" fill="currentColor"/><circle cx="10" cy="10" r="1.5" fill="currentColor"/><circle cx="16" cy="10" r="1.5" fill="currentColor"/></svg></span>
 					</button>
@@ -179,11 +189,14 @@
 		function param( n, f ) { var v = new URLSearchParams( location.search ).get( n ); return v ? v : f; }
 		var title = param( 'title', 'Photosynthesis' );
 		var toLang = param( 'to', 'Spanish' );
+		var fromLang = param( 'from', 'English' );
 		var article = DATA[ title ] || DATA[ 'Photosynthesis' ];
 		var initialSection = param( 'section', article.sections[ 0 ].en );
 
 		document.getElementById( 'sx-article' ).textContent = title;
 		document.getElementById( 'sx-article-link' ).href = 'https://en.wikipedia.org/wiki/' + encodeURIComponent( title.replace( / /g, '_' ) );
+		document.getElementById( 'sx-dir-from' ).textContent = fromLang;
+		document.getElementById( 'sx-dir-to' ).textContent = toLang;
 
 		var sectionTitleEl = document.getElementById( 'sx-section-title' );
 		var paraEl = document.getElementById( 'sx-para' );
@@ -192,21 +205,25 @@
 		var doneBtn = document.getElementById( 'sx-done' );
 		var tasknoteText = document.getElementById( 'sx-tasknote-text' );
 
-		var section, segs, state, current, firstAddDone = false;
+		// units = the section's translatable units, in order. unit[0] is the
+		// SECTION TITLE itself (a source-language unit you translate, exactly like
+		// the real flow), followed by the body sentences. Each unit is a
+		// [ source, machineTranslation ] pair.
+		var section, units, state, current, firstAddDone = false;
 
 		function setTaskNote() {
 			tasknoteText.innerHTML =
-				'Translating the <b>' + section.en + '</b> of <b>' + title + '</b> into ' + toLang +
-				'. It comes machine-drafted, so read every line and improve it before you apply it. ' +
-				'<span class="sx-tasknote__time">~' + Math.max( 2, Math.round( segs.length * 1.3 ) ) + ' min</span>';
+				'Translating the <b>' + section.en + '</b> of <b>' + title + '</b> from ' + fromLang + ' into ' + toLang +
+				'. Everything in grey is still the original; it comes machine-drafted, so read every line and improve it before you apply it. ' +
+				'<span class="sx-tasknote__time">~' + Math.max( 2, Math.round( units.length * 1.3 ) ) + ' min</span>';
 		}
 
 		function loadSection( sectionName ) {
 			section = article.sections.filter( function ( s ) { return s.en === sectionName; } )[ 0 ] || article.sections[ 0 ];
-			segs = section.segs;
-			state = segs.map( function ( s ) { return { added: false, text: s[ 1 ] }; } );
+			// title is unit 0; body sentences follow
+			units = [ [ section.en, section.es ] ].concat( section.segs );
+			state = units.map( function ( u ) { return { added: false, text: u[ 1 ] }; } );
 			current = 0;
-			sectionTitleEl.textContent = section.es;
 			setTaskNote();
 			renderAll();
 		}
@@ -216,25 +233,41 @@
 			return -1;
 		}
 
+		// build a clickable unit span. Pending units show the source text (muted);
+		// applied units show the target-language text the user is building.
+		function unitSpan( i ) {
+			var span = document.createElement( 'span' );
+			span.className = 'sx-sent';
+			if ( state[ i ].added ) { span.classList.add( 'is-added' ); span.textContent = state[ i ].text; }
+			else { span.textContent = units[ i ][ 0 ]; }
+			if ( i === current ) { span.classList.add( 'is-current' ); }
+			span.addEventListener( 'click', function () { if ( !state[ i ].added ) { current = i; renderAll(); } } );
+			return span;
+		}
+
 		function renderPara() {
+			// unit 0 is the section title; render it into the heading
+			sectionTitleEl.innerHTML = '';
+			sectionTitleEl.classList.toggle( 'is-pending', !state[ 0 ].added );
+			sectionTitleEl.appendChild( unitSpan( 0 ) );
+
+			// units 1..n are the body sentences
 			paraEl.innerHTML = '';
-			segs.forEach( function ( pair, i ) {
-				var span = document.createElement( 'span' );
-				span.className = 'sx-sent';
-				if ( state[ i ].added ) { span.classList.add( 'is-added' ); span.textContent = state[ i ].text; }
-				else { span.textContent = pair[ 0 ]; }
-				if ( i === current ) { span.classList.add( 'is-current' ); }
-				span.addEventListener( 'click', function () { if ( !state[ i ].added ) { current = i; renderAll(); } } );
-				paraEl.appendChild( span );
+			for ( var i = 1; i < units.length; i++ ) {
+				paraEl.appendChild( unitSpan( i ) );
 				paraEl.appendChild( document.createTextNode( ' ' ) );
-			} );
+			}
 		}
 
 		var originalEl = document.getElementById( 'sx-original' );
+		var suggestTitleEl = document.getElementById( 'sx-suggest-title' );
 		function renderSuggest() {
 			var allDone = firstPending() === -1;
 			suggestEl.hidden = allDone;
 			if ( allDone ) { return; }
+			// card title names which unit you are on; the persistent direction
+			// indicator above already shows the from -> into languages
+			suggestTitleEl.textContent = ( current === 0 ? 'Section title' : 'Suggested translation' ) + ' from MinT';
 			mtEl.textContent = state[ current ].text;
 			mtEl.removeAttribute( 'contenteditable' );
 			mtEl.classList.remove( 'is-editing' );
@@ -243,8 +276,9 @@
 
 		function renderAll() { renderPara(); renderSuggest(); }
 
+		var contentEl = document.querySelector( '.sx-content' );
 		function scrollCurrentIntoView() {
-			var el = paraEl.querySelector( '.is-current' );
+			var el = contentEl.querySelector( '.is-current' );
 			if ( el ) { el.scrollIntoView( { block: 'center', behavior: 'smooth' } ); }
 		}
 
@@ -280,7 +314,7 @@
 		document.getElementById( 'sx-skip' ).addEventListener( 'click', function () {
 			hideCheer();
 			var next = current;
-			do { next = ( next + 1 ) % segs.length; } while ( state[ next ].added && next !== current );
+			do { next = ( next + 1 ) % units.length; } while ( state[ next ].added && next !== current );
 			current = next;
 			renderAll();
 			scrollCurrentIntoView();
@@ -288,19 +322,19 @@
 
 		document.getElementById( 'sx-prev' ).addEventListener( 'click', function () {
 			hideCheer();
-			current = ( current - 1 + segs.length ) % segs.length;
+			current = ( current - 1 + units.length ) % units.length;
 			renderAll();
 			scrollCurrentIntoView();
 		} );
 		document.getElementById( 'sx-next' ).addEventListener( 'click', function () {
 			hideCheer();
-			current = ( current + 1 ) % segs.length;
+			current = ( current + 1 ) % units.length;
 			renderAll();
 			scrollCurrentIntoView();
 		} );
 
 		document.getElementById( 'sx-edit' ).addEventListener( 'click', function () {
-			originalEl.textContent = segs[ current ][ 0 ];        // pin the source as reference
+			originalEl.textContent = units[ current ][ 0 ];        // pin the source as reference
 			originalEl.hidden = false;
 			mtEl.setAttribute( 'contenteditable', 'true' );
 			mtEl.classList.add( 'is-editing' );
@@ -338,8 +372,8 @@
 		var optsBg = document.getElementById( 'sx-opts-bg' );
 		var opts = document.getElementById( 'sx-opts' );
 		function openOpts() {
-			document.getElementById( 'sx-opt-mt' ).textContent = segs[ current ][ 1 ];
-			document.getElementById( 'sx-opt-src' ).textContent = segs[ current ][ 0 ];
+			document.getElementById( 'sx-opt-mt' ).textContent = units[ current ][ 1 ];
+			document.getElementById( 'sx-opt-src' ).textContent = units[ current ][ 0 ];
 			optsBg.hidden = false; opts.hidden = false;
 			requestAnimationFrame( function () { optsBg.classList.add( 'is-open' ); opts.classList.add( 'is-open' ); } );
 		}
@@ -349,7 +383,7 @@
 		Array.prototype.forEach.call( opts.querySelectorAll( '.sx-opt' ), function ( o ) {
 			o.addEventListener( 'click', function () {
 				var k = o.getAttribute( 'data-opt' );
-				state[ current ].text = k === 'src' ? segs[ current ][ 0 ] : ( k === 'empty' ? '' : segs[ current ][ 1 ] );
+				state[ current ].text = k === 'src' ? units[ current ][ 0 ] : ( k === 'empty' ? '' : units[ current ][ 1 ] );
 				closeOpts(); renderSuggest();
 				if ( k === 'empty' ) { document.getElementById( 'sx-edit' ).click(); }
 			} );
