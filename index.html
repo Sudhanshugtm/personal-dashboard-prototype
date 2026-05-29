@@ -257,6 +257,22 @@
 			o.addEventListener( 'click', function () { apply( o.getAttribute( 'data-filter' ) ); closeSheet(); } );
 		} );
 		document.addEventListener( 'keydown', function ( e ) { if ( e.key === 'Escape' ) { closeSheet(); } } );
+
+		// translation cards open the Section Translation editor (SX)
+		var translateCards = document.querySelectorAll( '.xt-card, .card[data-activity="translate"]' );
+		Array.prototype.forEach.call( translateCards, function ( card ) {
+			var go = function () {
+				var titleEl = card.querySelector( '.card__subject b' );
+				var sectionEl = card.querySelector( '.xt-missing b' ) || card.querySelector( '.card__meta b' );
+				var title = titleEl ? titleEl.textContent.trim() : 'Photosynthesis';
+				var section = sectionEl ? sectionEl.textContent.trim() : 'Introduction';
+				location.href = 'sx/?title=' + encodeURIComponent( title ) +
+					'&section=' + encodeURIComponent( section ) +
+					'&from=English&to=Spanish';
+			};
+			var b = card.querySelector( '.cdx-button' );
+			if ( b ) { b.addEventListener( 'click', go ); }
+		} );
 	}() );
 	</script>
 </body>

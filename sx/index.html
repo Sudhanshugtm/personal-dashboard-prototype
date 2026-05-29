@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<meta name="theme-color" content="#f8f9fa">
+	<title>Section translation</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-root.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-mode-dark.css" media="( prefers-color-scheme: dark )">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex@latest/dist/codex.style.css">
+	<link rel="stylesheet" href="../styles.css">
+	<link rel="stylesheet" href="sx.css">
+</head>
+<body>
+	<!--
+		Section Translation editor (SX) — a believable mock of the real CX flow:
+		machine-translation draft pre-filled in the target language, tap a sentence
+		to refine, progress fills, Publish -> "it's live". Parameterised by query
+		params (title, section, from, to) set by the card the user tapped.
+	-->
+	<div class="device">
+		<div class="app sx-app">
+
+			<header class="sx-bar">
+				<a class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" href="../" aria-label="Close">
+					<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" fill="none"/></svg></span>
+				</a>
+				<div class="sx-bar__title">
+					<b id="sx-article">Photosynthesis</b>
+					<span id="sx-dir">English &rarr; Spanish</span>
+				</div>
+				<span class="sx-bar__progress" id="sx-progress">0 / 0</span>
+			</header>
+
+			<main class="sx-editor" aria-label="Section translation editor">
+				<p class="sx-note">
+					<span class="cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2l2.2 4.6L17 7.3l-3.5 3.4.8 4.8L10 13.2 5.7 15.5l.8-4.8L3 7.3l4.8-.7L10 2Z" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></span>
+					Machine translation — tap each line to review and refine.
+				</p>
+
+				<div class="sx-section">
+					<p class="sx-label">Section title</p>
+					<p class="sx-src" id="sx-sec-src">Introduction</p>
+					<div class="sx-tgt" id="sx-sec-tgt" contenteditable="true" role="textbox" aria-label="Section title translation">Introducción</div>
+				</div>
+
+				<div id="sx-segs"></div>
+			</main>
+
+			<div class="sx-publish">
+				<div class="sx-progressbar"><span class="sx-progressbar__fill" id="sx-bar"></span></div>
+				<button class="cdx-button cdx-button--action-progressive cdx-button--weight-primary" id="sx-publish">Publish section</button>
+			</div>
+
+			<!-- success -->
+			<div class="sx-done" id="sx-done" hidden>
+				<span class="sx-done__check cdx-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M14 24l7 7 14-15" fill="none" stroke="currentColor" stroke-width="3"/></svg></span>
+				<h2 id="sx-done-title">Published to Spanish Wikipedia</h2>
+				<p id="sx-done-text">You added the Introduction to Photosynthesis.</p>
+				<p class="sx-done__impact" id="sx-done-impact">Articles like this are read about 24k times a month.</p>
+				<div class="sx-done__actions">
+					<a class="cdx-button cdx-button--action-progressive cdx-button--weight-primary" href="../">Find another to translate</a>
+					<a class="cdx-button cdx-button--weight-quiet" href="../">Back to feed</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script>
+	( function () {
+		var SECTION_ES = { 'Introduction': 'Introducción', 'Early life': 'Primeros años', 'History': 'Historia' };
+		var DATA = {
+			'Photosynthesis': { impact: 'about 24k times a month', segs: [
+				[ 'Photosynthesis is the process by which green plants convert light energy into chemical energy.', 'La fotosíntesis es el proceso por el cual las plantas verdes convierten la energía lumínica en energía química.' ],
+				[ 'It takes place mainly in the leaves, inside structures called chloroplasts.', 'Ocurre principalmente en las hojas, dentro de estructuras llamadas cloroplastos.' ],
+				[ 'The process releases oxygen as a by-product.', 'El proceso libera oxígeno como subproducto.' ],
+				[ 'Photosynthesis is essential for almost all life on Earth.', 'La fotosíntesis es esencial para casi toda la vida en la Tierra.' ]
+			] },
+			'Quinoa': { impact: 'about 9k times a month', segs: [
+				[ 'Quinoa is a flowering plant grown as a crop for its edible seeds.', 'La quinua es una planta con flores cultivada por sus semillas comestibles.' ],
+				[ 'It is native to the Andean region of South America.', 'Es originaria de la región andina de Sudamérica.' ],
+				[ 'The seeds are rich in protein and are naturally gluten-free.', 'Las semillas son ricas en proteínas y no contienen gluten de forma natural.' ]
+			] },
+			'Olga de Amaral': { impact: 'about 1.2k times a month', segs: [
+				[ 'Olga de Amaral was born in Bogotá, Colombia, in 1932.', 'Olga de Amaral nació en Bogotá, Colombia, en 1932.' ],
+				[ 'She studied architectural design before turning to textile art.', 'Estudió diseño arquitectónico antes de dedicarse al arte textil.' ],
+				[ 'She later trained at the Cranbrook Academy of Art in the United States.', 'Más tarde se formó en la Cranbrook Academy of Art en Estados Unidos.' ]
+			] },
+			'Cumbia': { impact: 'about 31k times a month', segs: [
+				[ 'Cumbia is a musical genre that originated on the Caribbean coast of Colombia.', 'La cumbia es un género musical que se originó en la costa caribeña de Colombia.' ],
+				[ 'It blends Indigenous, African, and European musical traditions.', 'Combina tradiciones musicales indígenas, africanas y europeas.' ],
+				[ 'By the 20th century it had spread across Latin America.', 'Para el siglo XX se había extendido por toda América Latina.' ]
+			] }
+		};
+
+		function param( name, fallback ) {
+			var v = new URLSearchParams( location.search ).get( name );
+			return v !== null && v !== '' ? v : fallback;
+		}
+
+		var title = param( 'title', 'Photosynthesis' );
+		var section = param( 'section', 'Introduction' );
+		var from = param( 'from', 'English' );
+		var to = param( 'to', 'Spanish' );
+		var entry = DATA[ title ] || DATA[ 'Photosynthesis' ];
+
+		document.getElementById( 'sx-article' ).textContent = title;
+		document.getElementById( 'sx-dir' ).innerHTML = from + ' &rarr; ' + to;
+		document.getElementById( 'sx-sec-src' ).textContent = section;
+		document.getElementById( 'sx-sec-tgt' ).textContent = SECTION_ES[ section ] || section;
+		document.getElementById( 'sx-done-text' ).textContent = 'You added the ' + section + ' to ' + title + '.';
+		document.getElementById( 'sx-done-impact' ).textContent = 'Articles like this are read ' + entry.impact + '.';
+
+		var segWrap = document.getElementById( 'sx-segs' );
+		var total = entry.segs.length;
+		var reviewed = 0;
+		var progressEl = document.getElementById( 'sx-progress' );
+		var barEl = document.getElementById( 'sx-bar' );
+
+		function updateProgress() {
+			progressEl.textContent = reviewed + ' / ' + total;
+			barEl.style.width = ( total ? Math.round( reviewed / total * 100 ) : 0 ) + '%';
+		}
+
+		entry.segs.forEach( function ( pair, i ) {
+			var seg = document.createElement( 'div' );
+			seg.className = 'sx-seg';
+			seg.innerHTML =
+				'<p class="sx-label">Source</p>' +
+				'<p class="sx-src"></p>' +
+				'<div class="sx-tgt" contenteditable="true" role="textbox" aria-label="Translation of sentence ' + ( i + 1 ) + '"></div>' +
+				'<span class="sx-seg__badge">Machine translation</span>';
+			seg.querySelector( '.sx-src' ).textContent = pair[ 0 ];
+			var tgt = seg.querySelector( '.sx-tgt' );
+			tgt.textContent = pair[ 1 ];
+			var badge = seg.querySelector( '.sx-seg__badge' );
+			var counted = false;
+			tgt.addEventListener( 'focus', function () {
+				seg.classList.add( 'is-editing' );
+				if ( !counted ) { counted = true; reviewed++; updateProgress(); }
+			} );
+			tgt.addEventListener( 'blur', function () { seg.classList.remove( 'is-editing' ); } );
+			tgt.addEventListener( 'input', function () {
+				badge.textContent = 'Edited by you';
+				seg.classList.add( 'is-edited' );
+			} );
+			segWrap.appendChild( seg );
+		} );
+
+		updateProgress();
+
+		document.getElementById( 'sx-publish' ).addEventListener( 'click', function () {
+			var done = document.getElementById( 'sx-done' );
+			done.hidden = false;
+			requestAnimationFrame( function () { done.classList.add( 'is-open' ); } );
+		} );
+	}() );
+	</script>
+</body>
+</html>
