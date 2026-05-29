@@ -82,6 +82,36 @@
 }
 .nt-section-label[hidden] { display: none; }
 
+/* community collection header: shown when opened with ?collection=<id>.
+   Frames the list as a shared community effort, not a generic search. */
+.nt-collhead {
+	margin: 10px 16px 4px;
+	padding: 14px;
+	border: 1px solid var( --border-color-subtle, #c8ccd1 );
+	border-radius: 8px;
+	background: var( --background-color-progressive-subtle, #f1f4fd );
+}
+.nt-collhead[hidden] { display: none; }
+.nt-collhead__name {
+	margin: 0;
+	font-size: var( --font-size-large, 1.125rem );
+	line-height: 1.25;
+	font-weight: 700;
+	color: var( --color-base, #202122 );
+}
+.nt-collhead__by {
+	margin: 2px 0 0;
+	font-size: var( --font-size-small, 0.875rem );
+	font-weight: 600;
+	color: var( --color-progressive, #36c );
+}
+.nt-collhead__line {
+	margin: 6px 0 0;
+	font-size: var( --font-size-small, 0.875rem );
+	line-height: 1.45;
+	color: var( --color-base, #202122 );
+}
+
 .nt-row {
 	display: flex;
 	align-items: center;

@@ -49,6 +49,11 @@
 				</div>
 
 				<main class="feed nt-results" aria-label="Articles to translate">
+					<div class="nt-collhead" id="nt-collhead" hidden>
+						<p class="nt-collhead__name" id="nt-collhead-name"></p>
+						<p class="nt-collhead__by" id="nt-collhead-by"></p>
+						<p class="nt-collhead__line" id="nt-collhead-line"></p>
+					</div>
 					<p class="nt-section-label" id="nt-section-label">Recently edited by you</p>
 					<div id="nt-list"></div>
 					<p class="nt-empty" id="nt-noresults" hidden>No pages match that yet. Try another title.</p>
@@ -122,31 +127,52 @@
 		// langs = how many languages it exists in (CX "文A N").
 		// reach = readable weekly reads. gap describes what is missing in target.
 		var TARGET = 'Spanish';
+		// Community-defined lists (Collections): curated article sets. When the
+		// page is opened with ?collection=<id>, it shows this header and lists
+		// only that collection's articles. Every listed article exists in the SX
+		// editor DATA, so nothing dead-ends.
+		var COLLECTIONS = {
+			'colombian-culture': {
+				name: 'Colombian culture',
+				by: 'Curated by Wikimedia Colombia',
+				line: 'Artists and music that shape Colombian life, brought to readers in Spanish.'
+			},
+			'plants-crops': {
+				name: 'Plants and crops',
+				by: 'Curated by WikiProject Plants',
+				line: 'Everyday plants and the crops people grow, explained for Spanish readers.'
+			}
+		};
 		var ARTICLES = [
 			{
 				title: 'Jaipur', desc: 'Capital of the Indian state of Rajasthan',
 				langs: 125, reach: '6,000', recent: true, exists: true,
-				gap: { has: true, missing: 'Etymology', more: 12 }, hero: 'jaipur'
+				gap: { has: true, missing: 'Etymology', more: 12 }, hero: 'jaipur',
+				collections: []
 			},
 			{
 				title: 'Photosynthesis', desc: 'Process used by plants to convert light into energy',
 				langs: 162, reach: '24,000', recent: true, exists: false,
-				gap: { has: false }, hero: 'leaf'
+				gap: { has: false }, hero: 'leaf',
+				collections: [ 'plants-crops' ]
 			},
 			{
 				title: 'Quinoa', desc: 'Andean grain crop grown for its edible seeds',
 				langs: 88, reach: '9,000', recent: true, exists: true,
-				gap: { has: true, missing: 'Cultivation', more: 3 }, hero: 'grain'
+				gap: { has: true, missing: 'Cultivation', more: 3 }, hero: 'grain',
+				collections: [ 'plants-crops' ]
 			},
 			{
 				title: 'Olga de Amaral', desc: 'Colombian textile and visual artist',
 				langs: 11, reach: '1,200', recent: false, exists: true,
-				gap: { has: true, missing: 'Early life', more: 2 }, hero: 'art'
+				gap: { has: true, missing: 'Early life', more: 2 }, hero: 'art',
+				collections: [ 'colombian-culture' ]
 			},
 			{
 				title: 'Cumbia', desc: 'Music genre from the Caribbean coast of Colombia',
 				langs: 42, reach: '31,000', recent: false, exists: false,
-				gap: { has: false }, hero: 'music'
+				gap: { has: false }, hero: 'music',
+				collections: [ 'colombian-culture' ]
 			}
 		];
 
@@ -175,6 +201,17 @@
 		var input = document.getElementById( 'nt-input' );
 		var sectionLabel = document.getElementById( 'nt-section-label' );
 		var noResults = document.getElementById( 'nt-noresults' );
+		var collHead = document.getElementById( 'nt-collhead' );
+
+		// optional ?collection=<id>: scope the page to one community collection
+		var collId = ( new URLSearchParams( location.search ) ).get( 'collection' );
+		var collection = ( collId && COLLECTIONS[ collId ] ) ? COLLECTIONS[ collId ] : null;
+		if ( collection ) {
+			document.getElementById( 'nt-collhead-name' ).textContent = collection.name;
+			document.getElementById( 'nt-collhead-by' ).textContent = collection.by;
+			document.getElementById( 'nt-collhead-line' ).textContent = collection.line;
+			collHead.hidden = false;
+		}
 
 		function row( a ) {
 			var btn = document.createElement( 'button' );
@@ -195,7 +232,14 @@
 		function render( query ) {
 			var q = ( query || '' ).trim().toLowerCase();
 			var items;
-			if ( q === '' ) {
+			if ( collection && q === '' ) {
+				// scoped to a collection: list only its articles, no empty state
+				sectionLabel.textContent = 'Articles in this collection';
+				sectionLabel.hidden = false;
+				items = ARTICLES.filter( function ( a ) {
+					return ( a.collections || [] ).indexOf( collId ) !== -1;
+				} );
+			} else if ( q === '' ) {
 				sectionLabel.textContent = 'Recently edited by you';
 				sectionLabel.hidden = false;
 				items = ARTICLES.filter( function ( a ) { return a.recent; } );
@@ -206,6 +250,8 @@
 						a.desc.toLowerCase().indexOf( q ) !== -1;
 				} );
 			}
+			// the collection header only makes sense over the collection's own list
+			if ( collection ) { collHead.hidden = ( q !== '' ); }
 			list.innerHTML = '';
 			items.forEach( function ( a ) { list.appendChild( row( a ) ); } );
 			noResults.hidden = !( q !== '' && items.length === 0 );
