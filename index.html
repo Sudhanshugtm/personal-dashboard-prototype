@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 	<meta name="theme-color" content="#f8f9fa">
-	<title>Personal Dashboard — For You (baseline)</title>
+	<title>Personal Dashboard — For You</title>
 
 	<!-- Wikimedia Codex: design tokens + CSS-only components (CDN, so it runs standalone) -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@wikimedia/codex-design-tokens/theme-wikimedia-ui-root.css">
@@ -15,11 +15,11 @@
 </head>
 <body>
 	<!--
-		BASELINE (T419358): faithful reproduction of the imagined unified
-		"For You" dashboard — one flat feed mixing reader, contributor and
-		moderator cards. This is the control state; improvements live in
-		sibling variants. Mobile-first: fills the screen like an app on a
-		phone, shows inside a device frame on wider screens.
+		Home feed (T419358). One "For You" feed; the top filter funnel lets you
+		narrow to a single contribution activity. Choosing "Translation" re-renders
+		the same feed as a Section Translation feed, with the metadata a translator
+		actually decides on: the missing section, language direction, effort, and
+		readership, plus why it was surfaced.
 	-->
 	<div class="device">
 		<div class="app">
@@ -47,47 +47,40 @@
 
 			<div class="feed-bar">
 				<button class="cdx-button cdx-button--weight-quiet feed-bar__scope" aria-haspopup="listbox">
-					<span>For You</span>
+					<span id="scope-label">For You</span>
 					<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
 				</button>
-				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Filter feed">
+				<button id="filter-btn" class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Filter feed by activity" aria-haspopup="dialog">
 					<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4h14l-5 6v5l-4 2v-7L3 4Z" fill="currentColor"/></svg></span>
 				</button>
 			</div>
 
 			<main class="feed" aria-label="For You feed">
 
-				<article class="card">
+				<!-- ===== general "For You" mix (default) ===== -->
+				<article class="card" data-activity="review">
 					<p class="card__kicker">
 						Suggested investigations <span class="arrow">&rarr;</span>
 						<span class="card__headline card__headline--alert">112 logins from 2 IP addresses in 7 min</span>
 					</p>
 					<p class="card__subject">
 						<span class="who"><span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M4.5 17c1-3 3-4 5.5-4s4.5 1 5.5 4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>Rand0user1</span>
-						<span class="dot">&middot;</span> 1 past check
-						<span class="dot">&middot;</span> 0 edits
+						<span class="dot">&middot;</span> 1 past check <span class="dot">&middot;</span> 0 edits
 					</p>
 					<p class="card__meta">Last activity: 11:16, 30 March 2026</p>
-					<div class="card__actions">
-						<button class="cdx-button">Open case</button>
-					</div>
+					<div class="card__actions"><button class="cdx-button">Open case</button></div>
 				</article>
 
-				<article class="card">
+				<article class="card" data-activity="read">
 					<p class="card__kicker">
 						Reading list <span class="arrow">&rarr;</span>
 						<span class="card__headline card__headline--muted">Saved on this day</span>
 					</p>
 					<p class="card__title-link"><a href="#">List of Choose Your Own Adventure books</a></p>
-					<div class="card__actions">
-						<button class="cdx-button">
-							<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3h10v15l-5-3.2L5 18V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>
-							Unsave
-						</button>
-					</div>
+					<div class="card__actions"><button class="cdx-button"><span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3h10v15l-5-3.2L5 18V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>Unsave</button></div>
 				</article>
 
-				<article class="card">
+				<article class="card" data-activity="review">
 					<p class="card__kicker">
 						Review changes <span class="arrow">&rarr;</span>
 						<span class="card__headline card__headline--alert">Tone issue.</span>
@@ -96,22 +89,15 @@
 					<div class="card__body">
 						<div class="card__body-text">
 							<p class="card__subject"><b>Gorillaz</b> <span class="muted">British virtual band</span></p>
-							<p class="card__subject">
-								<span class="who"><span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M4.5 17c1-3 3-4 5.5-4s4.5 1 5.5 4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>Pigeonsinthecity</span>
-								<span class="dot">&middot;</span> 51 minutes ago
-							</p>
+							<p class="card__subject"><span class="who"><span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M4.5 17c1-3 3-4 5.5-4s4.5 1 5.5 4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></span>Pigeonsinthecity</span> <span class="dot">&middot;</span> 51 minutes ago</p>
 							<p class="card__meta card__meta--strong">Added mountain info</p>
 						</div>
-						<div class="thumb" aria-hidden="true">
-							<svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#eaecf0"/><circle cx="20" cy="24" r="7" fill="#c8ccd1"/><circle cx="34" cy="26" r="7" fill="#a2a9b1"/><circle cx="46" cy="24" r="7" fill="#c8ccd1"/><rect x="10" y="40" width="44" height="16" rx="3" fill="#c8ccd1"/></svg>
-						</div>
+						<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#eaecf0"/><circle cx="20" cy="24" r="7" fill="#c8ccd1"/><circle cx="34" cy="26" r="7" fill="#a2a9b1"/><circle cx="46" cy="24" r="7" fill="#c8ccd1"/><rect x="10" y="40" width="44" height="16" rx="3" fill="#c8ccd1"/></svg></div>
 					</div>
-					<div class="card__actions">
-						<button class="cdx-button">Compare revisions</button>
-					</div>
+					<div class="card__actions"><button class="cdx-button">Compare revisions</button></div>
 				</article>
 
-				<article class="card">
+				<article class="card" data-activity="edit">
 					<p class="card__kicker">
 						Suggested edit <span class="arrow">&rarr;</span>
 						<span class="card__headline card__headline--muted">Make articles more factual by removing promotional words</span>
@@ -121,16 +107,12 @@
 							<p class="card__subject"><b>Olga de Amaral</b></p>
 							<p class="card__excerpt">Olga de Amaral is a Colombian textile and visual artist known for&hellip;</p>
 						</div>
-						<div class="thumb" aria-hidden="true">
-							<svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#efe7da"/><circle cx="32" cy="22" r="9" fill="#cdbba0"/><rect x="14" y="34" width="36" height="24" rx="3" fill="#cdbba0"/></svg>
-						</div>
+						<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#efe7da"/><circle cx="32" cy="22" r="9" fill="#cdbba0"/><rect x="14" y="34" width="36" height="24" rx="3" fill="#cdbba0"/></svg></div>
 					</div>
-					<div class="card__actions">
-						<button class="cdx-button">Revise tone</button>
-					</div>
+					<div class="card__actions"><button class="cdx-button">Revise tone</button></div>
 				</article>
 
-				<article class="card">
+				<article class="card" data-activity="translate">
 					<p class="card__kicker">
 						Suggested translation <span class="arrow">&rarr;</span>
 						<span class="card__headline card__headline--muted">Translate one section into Spanish</span>
@@ -145,37 +127,137 @@
 							</p>
 							<p class="card__meta"><b>Introduction</b> &middot; about 5 min &middot; not yet in Spanish</p>
 						</div>
-						<div class="thumb" aria-hidden="true">
-							<svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#e3efe0"/><path d="M32 14c8 6 8 24 0 36-8-12-8-30 0-36Z" fill="#9fd29a"/><path d="M32 16v32M32 26c5-3 9-3 12-1M32 34c-5-3-9-3-12-1" stroke="#5a9b54" stroke-width="2" fill="none"/></svg>
-						</div>
+						<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#e3efe0"/><path d="M32 14c8 6 8 24 0 36-8-12-8-30 0-36Z" fill="#9fd29a"/><path d="M32 16v32M32 26c5-3 9-3 12-1M32 34c-5-3-9-3-12-1" stroke="#5a9b54" stroke-width="2" fill="none"/></svg></div>
 					</div>
-					<div class="card__actions">
-						<button class="cdx-button">
-							<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 5h7M5.5 5v1.5c0 3-1.6 5.2-3.5 6.5M3.4 9.2c0 1.7 1.8 3.3 4 3.8" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M10.5 17l3-8 3 8M11.4 14.4h4.2" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
-							Translate section
-						</button>
-					</div>
+					<div class="card__actions"><button class="cdx-button"><span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 5h7M5.5 5v1.5c0 3-1.6 5.2-3.5 6.5M3.4 9.2c0 1.7 1.8 3.3 4 3.8" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M10.5 17l3-8 3 8M11.4 14.4h4.2" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>Translate section</button></div>
 				</article>
+
+				<!-- ===== Translation activity feed (shown when "Translation" is chosen) ===== -->
+				<div class="xfeed" data-feed="translate" hidden>
+
+					<article class="card xt-card">
+						<p class="xt-why"><span class="xt-chip xt-chip--you">Because you edited it</span></p>
+						<div class="card__body">
+							<div class="card__body-text">
+								<p class="card__subject"><b>Photosynthesis</b></p>
+								<p class="card__langs"><span class="lang-pill">English</span><span class="lang-arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span><span class="lang-pill lang-pill--target">Spanish</span></p>
+								<p class="xt-missing">Add the <b>Introduction</b></p>
+								<p class="xt-meta"><span class="xt-meta__time">about 5 min</span> <span class="dot">&middot;</span> 24k readers / month</p>
+							</div>
+							<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#e3efe0"/><path d="M32 14c8 6 8 24 0 36-8-12-8-30 0-36Z" fill="#9fd29a"/><path d="M32 16v32M32 26c5-3 9-3 12-1M32 34c-5-3-9-3-12-1" stroke="#5a9b54" stroke-width="2" fill="none"/></svg></div>
+						</div>
+						<div class="card__actions"><button class="cdx-button">Translate section</button></div>
+					</article>
+
+					<article class="card xt-card">
+						<p class="xt-why"><span class="xt-chip">Quick win</span></p>
+						<div class="card__body">
+							<div class="card__body-text">
+								<p class="card__subject"><b>Quinoa</b></p>
+								<p class="card__langs"><span class="lang-pill">English</span><span class="lang-arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span><span class="lang-pill lang-pill--target">Spanish</span></p>
+								<p class="xt-missing">Add the <b>Introduction</b></p>
+								<p class="xt-meta"><span class="xt-meta__time">about 3 min</span> <span class="dot">&middot;</span> 9k readers / month</p>
+							</div>
+							<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#f3eede"/><circle cx="22" cy="26" r="5" fill="#d9c489"/><circle cx="34" cy="22" r="5" fill="#cdb673"/><circle cx="44" cy="28" r="5" fill="#d9c489"/><rect x="14" y="40" width="36" height="14" rx="3" fill="#cdb673"/></svg></div>
+						</div>
+						<div class="card__actions"><button class="cdx-button">Translate section</button></div>
+					</article>
+
+					<article class="card xt-card">
+						<p class="xt-why"><span class="xt-chip">Your topic &middot; Art</span></p>
+						<div class="card__body">
+							<div class="card__body-text">
+								<p class="card__subject"><b>Olga de Amaral</b></p>
+								<p class="card__langs"><span class="lang-pill">English</span><span class="lang-arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span><span class="lang-pill lang-pill--target">Spanish</span></p>
+								<p class="xt-missing">Add <b>Early life</b></p>
+								<p class="xt-meta"><span class="xt-meta__time">about 4 min</span> <span class="dot">&middot;</span> 1.2k readers / month</p>
+							</div>
+							<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#efe7da"/><circle cx="32" cy="22" r="9" fill="#cdbba0"/><rect x="14" y="34" width="36" height="24" rx="3" fill="#cdbba0"/></svg></div>
+						</div>
+						<div class="card__actions"><button class="cdx-button">Translate section</button></div>
+					</article>
+
+					<article class="card xt-card">
+						<p class="xt-why"><span class="xt-chip">Popular this week</span></p>
+						<div class="card__body">
+							<div class="card__body-text">
+								<p class="card__subject"><b>Cumbia</b></p>
+								<p class="card__langs"><span class="lang-pill">English</span><span class="lang-arrow cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h12M11 6l4 4-4 4" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span><span class="lang-pill lang-pill--target">Spanish</span></p>
+								<p class="xt-missing">Add <b>History</b></p>
+								<p class="xt-meta"><span class="xt-meta__time">about 8 min</span> <span class="dot">&middot;</span> 31k readers / month</p>
+							</div>
+							<div class="thumb" aria-hidden="true"><svg viewBox="0 0 64 64"><rect width="64" height="64" fill="#e7e2ef"/><path d="M22 18v22a6 6 0 1 1-4-5.6V22l20-4v18a6 6 0 1 1-4-5.6V14l-12 4Z" fill="#b3a4cf"/></svg></div>
+						</div>
+						<div class="card__actions"><button class="cdx-button">Translate section</button></div>
+					</article>
+
+				</div>
+
+				<p class="feed-empty" data-feed-empty hidden>Nothing here yet for this activity.</p>
 
 			</main>
 
 			<nav class="toolbar" aria-label="Dashboard tools">
-				<button class="cdx-button cdx-button--weight-quiet cdx-button--is-active">
-					<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M2.5 10h15M10 2.5c2.5 2.5 2.5 12.5 0 15M10 2.5c-2.5 2.5-2.5 12.5 0 15" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></span>
-					Explore
-				</button>
-				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="History">
-					<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 5v5l3 2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3.5 10a6.5 6.5 0 1 0 1.9-4.6" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3 3v3h3" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
-				</button>
-				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Help">
-					<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7.7 7.6a2.3 2.3 0 1 1 3 2.2c-.8.3-1.2.8-1.2 1.7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="9.5" cy="14.2" r="0.9" fill="currentColor"/></svg></span>
-				</button>
-				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Settings">
-					<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M15.3 4.7l-1.4 1.4M6.1 13.9l-1.4 1.4" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
-				</button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--is-active"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M2.5 10h15M10 2.5c2.5 2.5 2.5 12.5 0 15M10 2.5c-2.5 2.5-2.5 12.5 0 15" stroke="currentColor" stroke-width="1.2" fill="none"/></svg></span>Explore</button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="History"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 5v5l3 2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3.5 10a6.5 6.5 0 1 0 1.9-4.6" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3 3v3h3" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span></button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Help"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M7.7 7.6a2.3 2.3 0 1 1 3 2.2c-.8.3-1.2.8-1.2 1.7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="9.5" cy="14.2" r="0.9" fill="currentColor"/></svg></span></button>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" aria-label="Settings"><span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M15.3 4.7l-1.4 1.4M6.1 13.9l-1.4 1.4" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span></button>
 			</nav>
+
+			<!-- activity filter bottom sheet -->
+			<div class="sheet-backdrop" data-sheet-backdrop hidden></div>
+			<div class="sheet" data-sheet role="dialog" aria-label="Filter by activity" aria-modal="true" hidden>
+				<div class="sheet__handle" aria-hidden="true"></div>
+				<p class="sheet__title">Show in your feed</p>
+				<button class="sheet__opt sheet__opt--active" data-filter="all">All activity<span class="sheet__check cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-9" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></span></button>
+				<button class="sheet__opt" data-filter="edit">Editing<span class="sheet__check cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-9" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></span></button>
+				<button class="sheet__opt" data-filter="translate">Translation<span class="sheet__check cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-9" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></span></button>
+				<button class="sheet__opt" data-filter="review">Reviewing<span class="sheet__check cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-9" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></span></button>
+				<button class="sheet__opt" data-filter="read">Reading<span class="sheet__check cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10l4 4 8-9" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></span></button>
+			</div>
 
 		</div>
 	</div>
+
+	<script>
+	( function () {
+		var btn = document.getElementById( 'filter-btn' );
+		var sheet = document.querySelector( '[data-sheet]' );
+		var backdrop = document.querySelector( '[data-sheet-backdrop]' );
+		var opts = Array.prototype.slice.call( document.querySelectorAll( '.sheet__opt' ) );
+		var scopeLabel = document.getElementById( 'scope-label' );
+		var generalCards = Array.prototype.slice.call( document.querySelectorAll( '.feed > .card[data-activity]' ) );
+		var translateFeed = document.querySelector( '[data-feed="translate"]' );
+		var emptyMsg = document.querySelector( '[data-feed-empty]' );
+		var feed = document.querySelector( '.feed' );
+
+		var LABELS = { all: 'For You', edit: 'Editing', translate: 'Translation', review: 'Reviewing', read: 'Reading' };
+
+		function openSheet() { sheet.hidden = false; backdrop.hidden = false; requestAnimationFrame( function () { sheet.classList.add( 'is-open' ); backdrop.classList.add( 'is-open' ); } ); }
+		function closeSheet() { sheet.classList.remove( 'is-open' ); backdrop.classList.remove( 'is-open' ); setTimeout( function () { sheet.hidden = true; backdrop.hidden = true; }, 200 ); }
+
+		function apply( filter ) {
+			var translateOn = filter === 'translate';
+			translateFeed.hidden = !translateOn;
+			generalCards.forEach( function ( card ) {
+				card.hidden = translateOn ? true : ( filter !== 'all' && card.getAttribute( 'data-activity' ) !== filter );
+			} );
+			// empty-state (e.g. an activity with no general cards)
+			var anyVisible = translateOn || generalCards.some( function ( c ) { return !c.hidden; } );
+			if ( emptyMsg ) { emptyMsg.hidden = anyVisible; }
+			scopeLabel.textContent = LABELS[ filter ] || 'For You';
+			btn.classList.toggle( 'cdx-button--is-active', filter !== 'all' );
+			opts.forEach( function ( o ) { o.classList.toggle( 'sheet__opt--active', o.getAttribute( 'data-filter' ) === filter ); } );
+			if ( feed ) { feed.scrollTop = 0; }
+		}
+
+		btn.addEventListener( 'click', openSheet );
+		backdrop.addEventListener( 'click', closeSheet );
+		opts.forEach( function ( o ) {
+			o.addEventListener( 'click', function () { apply( o.getAttribute( 'data-filter' ) ); closeSheet(); } );
+		} );
+		document.addEventListener( 'keydown', function ( e ) { if ( e.key === 'Escape' ) { closeSheet(); } } );
+	}() );
+	</script>
 </body>
 </html>

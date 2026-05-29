@@ -226,6 +226,90 @@ body {
 	margin-top: 14px;
 }
 
+/* ---- activity filter: translation card metadata ---- */
+.xt-why { margin: 0 0 8px; }
+.xt-chip {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: var( --font-size-x-small, 0.75rem );
+	font-weight: 600;
+	color: var( --color-subtle, #54595d );
+	background: var( --background-color-neutral, #eaecf0 );
+}
+.xt-chip--you { color: var( --color-progressive, #36c ); background: var( --background-color-progressive-subtle, #f1f4fd ); }
+
+.xt-card .card__langs { margin: 4px 0 4px; }
+.xt-missing { margin: 0; color: var( --color-base, #202122 ); }
+.xt-missing b { font-weight: 700; }
+.xt-meta { margin: 4px 0 0; color: var( --color-subtle, #54595d ); font-size: var( --font-size-small, 0.875rem ); }
+.xt-meta__time { color: var( --color-base, #202122 ); font-weight: 600; }
+
+.feed-empty { padding: 32px 16px; text-align: center; color: var( --color-subtle, #54595d ); }
+
+/* ---- activity filter: bottom sheet ---- */
+.sheet-backdrop {
+	position: absolute;
+	inset: 0;
+	z-index: 20;
+	background: rgba( 0, 0, 0, 0.4 );
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+.sheet-backdrop.is-open { opacity: 1; }
+
+.sheet {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 21;
+	padding: 8px 8px calc( 12px + env( safe-area-inset-bottom, 0px ) );
+	background: var( --background-color-base, #fff );
+	border-top-left-radius: 16px;
+	border-top-right-radius: 16px;
+	box-shadow: 0 -4px 24px rgba( 0, 0, 0, 0.18 );
+	transform: translateY( 100% );
+	transition: transform 0.2s ease;
+}
+.sheet.is-open { transform: translateY( 0 ); }
+
+.sheet__handle {
+	width: 36px;
+	height: 4px;
+	margin: 4px auto 10px;
+	border-radius: 999px;
+	background: var( --border-color-base, #a2a9b1 );
+}
+
+.sheet__title {
+	margin: 0 0 6px;
+	padding: 0 8px;
+	font-size: var( --font-size-small, 0.875rem );
+	font-weight: 700;
+	color: var( --color-subtle, #54595d );
+}
+
+.sheet__opt {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	padding: 14px 12px;
+	border: 0;
+	border-radius: 8px;
+	background: transparent;
+	font-size: var( --font-size-medium, 1rem );
+	font-weight: 600;
+	color: var( --color-base, #202122 );
+	text-align: left;
+	cursor: pointer;
+}
+.sheet__opt:hover { background: var( --background-color-neutral-subtle, #f8f9fa ); }
+.sheet__opt--active { color: var( --color-progressive, #36c ); }
+.sheet__check { color: var( --color-progressive, #36c ); opacity: 0; }
+.sheet__opt--active .sheet__check { opacity: 1; }
+
 /* ---- floating bottom toolbar (no Codex equivalent — token-styled shell) ---- */
 .toolbar {
 	position: absolute;
