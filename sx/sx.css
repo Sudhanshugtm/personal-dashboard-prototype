@@ -16,6 +16,54 @@
 }
 .sx-bar__title { margin: 0; text-align: center; font-size: var( --font-size-medium, 1rem ); font-weight: 700; color: var( --color-base, #202122 ); }
 
+/* onboarding: one-line task strip (not a modal) */
+.sx-tasknote {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 10px 12px;
+	background: var( --background-color-progressive-subtle, #f1f4fd );
+	border-bottom: 1px solid var( --border-color-muted, #dadde3 );
+}
+.sx-tasknote__icon { color: var( --color-progressive, #36c ); margin-top: 2px; flex: 0 0 auto; }
+.sx-tasknote__text { margin: 0; font-size: var( --font-size-small, 0.875rem ); line-height: 1.4; color: var( --color-base, #202122 ); flex: 1; }
+.sx-tasknote__time { color: var( --color-subtle, #54595d ); white-space: nowrap; }
+.sx-tasknote__close {
+	flex: 0 0 auto;
+	border: 0; padding: 2px; margin: -2px -2px 0 0;
+	background: transparent; cursor: pointer;
+	color: var( --color-subtle, #72777d );
+	line-height: 0;
+}
+.sx-tasknote__close:hover { color: var( --color-base, #202122 ); }
+
+/* onboarding: first-Add encouragement (transient) */
+.sx-cheer {
+	flex: 0 0 auto;
+	overflow: hidden;
+	max-height: 0;
+	padding: 0 14px;
+	background: var( --background-color-success-subtle, #eafaf1 );
+	color: #14866d;
+	font-size: var( --font-size-small, 0.875rem );
+	font-weight: 600;
+	border-bottom: 1px solid transparent;
+	opacity: 0;
+	transition: max-height 0.25s ease, opacity 0.25s ease, padding 0.25s ease;
+}
+.sx-cheer.is-open { max-height: 60px; opacity: 1; padding: 10px 14px; border-bottom-color: var( --border-color-muted, #dadde3 ); }
+.sx-cheer[hidden] { display: none; }
+
+/* onboarding: first-run hint inside the suggestion card (self-dismisses) */
+.sx-hint {
+	margin: 0 0 4px;
+	font-size: var( --font-size-small, 0.875rem );
+	line-height: 1.4;
+	color: var( --color-subtle, #54595d );
+}
+.sx-hint b { color: var( --color-base, #202122 ); font-weight: 600; }
+
 /* content area (fills in as you translate) */
 .sx-content {
 	flex: 1 1 auto;

@@ -30,6 +30,18 @@
 				<button class="cdx-button" id="sx-done" disabled>Done</button>
 			</header>
 
+			<!-- onboarding: one-line task framing (not a modal). Dismissible. -->
+			<div class="sx-tasknote" id="sx-tasknote">
+				<span class="sx-tasknote__icon cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2l2.2 4.6L17 7.3l-3.5 3.4.8 4.8L10 13.2 5.7 15.5l.8-4.8L3 7.3l4.8-.7L10 2Z" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></span>
+				<p class="sx-tasknote__text" id="sx-tasknote-text"></p>
+				<button class="sx-tasknote__close" id="sx-tasknote-close" aria-label="Dismiss">
+					<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.6" fill="none"/></svg></span>
+				</button>
+			</div>
+
+			<!-- onboarding: brief positive feedback after the first added sentence -->
+			<div class="sx-cheer" id="sx-cheer" role="status" aria-live="polite" hidden></div>
+
 			<main class="sx-content" aria-label="Section being translated">
 				<div class="sx-content-header">
 					<a class="sx-article-link" id="sx-article-link" href="#" target="_blank" rel="noopener">
@@ -50,6 +62,7 @@
 					</button>
 				</div>
 				<div class="sx-suggest__mt" id="sx-mt"></div>
+				<p class="sx-hint" id="sx-hint" aria-live="polite">This is a machine draft — tap <b>Add translation</b> to use it, or <b>Edit</b> to tweak it first.</p>
 				<button class="cdx-button cdx-button--weight-quiet cdx-button--action-progressive sx-suggest__edit" id="sx-edit">
 					<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M13.5 3.5l3 3L7 16l-4 1 1-4 9.5-9.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
 					Edit translation
@@ -115,14 +128,24 @@
 		function param( n, f ) { var v = new URLSearchParams( location.search ).get( n ); return v ? v : f; }
 		var title = param( 'title', 'Photosynthesis' );
 		var section = param( 'section', 'Introduction' );
+		var toLang = param( 'to', 'Spanish' );
 		var entry = DATA[ title ] || DATA[ 'Photosynthesis' ];
 		var segs = entry.segs;
+		var estMins = Math.max( 2, Math.round( segs.length * 1.3 ) );
 
 		document.getElementById( 'sx-article' ).textContent = title;
 		document.getElementById( 'sx-article-link' ).href = 'https://en.wikipedia.org/wiki/' + encodeURIComponent( title.replace( / /g, '_' ) );
 		document.getElementById( 'sx-section-title' ).textContent = SECTION_ES[ section ] || section;
 		document.getElementById( 'sx-done-text' ).textContent = 'You added the ' + section + ' to ' + title + '.';
 		document.getElementById( 'sx-done-impact' ).textContent = 'Articles like this are read ' + entry.impact + '.';
+
+		// onboarding: one-line task framing
+		document.getElementById( 'sx-tasknote-text' ).innerHTML =
+			'Adding the <b>' + section + '</b> of <b>' + title + '</b> in ' + toLang +
+			' — we’ve drafted it, review each line and Add. <span class="sx-tasknote__time">~' + estMins + ' min</span>';
+		document.getElementById( 'sx-tasknote-close' ).addEventListener( 'click', function () {
+			document.getElementById( 'sx-tasknote' ).remove();
+		} );
 
 		// state: each sentence is 'pending' (shown as source) or 'added' (target text)
 		var state = segs.map( function ( s ) { return { added: false, text: s[ 1 ] }; } );
@@ -168,9 +191,28 @@
 			if ( el ) { el.scrollIntoView( { block: 'center', behavior: 'smooth' } ); }
 		}
 
+		var firstAddDone = false;
+		var cheerEl = document.getElementById( 'sx-cheer' );
+		function hideCheer() {
+			cheerEl.classList.remove( 'is-open' );
+			setTimeout( function () { cheerEl.hidden = true; }, 250 );
+		}
+		function cheerAfterFirstAdd() {
+			var hint = document.getElementById( 'sx-hint' );
+			if ( hint ) { hint.remove(); }                       // self-dismiss the first-run hint
+			var remaining = state.filter( function ( s ) { return !s.added; } ).length;
+			cheerEl.textContent = remaining > 0
+				? 'Nice — your first sentence is ready to publish. ' + remaining + ' to go.'
+				: 'Nice — that sentence is ready. Tap Done to publish.';
+			cheerEl.hidden = false;
+			requestAnimationFrame( function () { cheerEl.classList.add( 'is-open' ); } );
+		}
+
 		document.getElementById( 'sx-add' ).addEventListener( 'click', function () {
+			if ( firstAddDone ) { hideCheer(); }                 // clear lingering cheer on later adds
 			state[ current ].added = true;
 			doneBtn.disabled = false;
+			if ( !firstAddDone ) { firstAddDone = true; cheerAfterFirstAdd(); }
 			var next = firstPending();
 			current = next === -1 ? current : next;
 			renderAll();
@@ -178,6 +220,7 @@
 		} );
 
 		document.getElementById( 'sx-skip' ).addEventListener( 'click', function () {
+			hideCheer();
 			var next = current;
 			do { next = ( next + 1 ) % segs.length; } while ( state[ next ].added && next !== current );
 			current = next;

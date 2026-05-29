@@ -32,6 +32,13 @@ Grounded in the extension: suggestions come from cxserver `/suggest/sections` + 
 How we'd know a direction worked: tap-through on the lead section, and the
 reader → first-contribution rate, beating the flat baseline.
 
+## SX onboarding — minimal, no modals (`/sx/`)
+For a user who *stumbled in* from the feed (didn't seek translation), onboarding closes the mental-model gap without a dialog or tour. Principle: **shape the first moment of the task, don't add a layer before it.** Three quiet pieces:
+1. **Task strip** (persistent, dismissible, not a popup): "Adding the *Introduction* of *Photosynthesis* in Spanish — we've drafted it, review each line and Add · ~5 min." Answers what / do-I-write-it / how-big in one line.
+2. **First-run hint** on the suggestion card ("This is a machine draft — tap Add to use it, or Edit to tweak"), tied to the one primary action; **self-dismisses** after the first Add.
+3. **First-Add cheer** ("Nice — your first sentence is ready to publish. N to go.") — learning-by-doing payoff; lingers until the next action.
+All are `aria-live`. No tour, no next/next/next. The content area filling in as you go is the rest of the tutorial (show, don't tell).
+
 ## Open questions for the morning
 - Should the dashboard infer intent (role/history) or ask once?
 - Is "Moderate" even a peer of Read/Contribute, or its own gated surface? (a
