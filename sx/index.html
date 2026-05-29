@@ -13,47 +13,65 @@
 </head>
 <body>
 	<!--
-		Section Translation editor (SX) — a believable mock of the real CX flow:
-		machine-translation draft pre-filled in the target language, tap a sentence
-		to refine, progress fills, Publish -> "it's live". Parameterised by query
-		params (title, section, from, to) set by the card the user tapped.
+		Section Translation editor (SX) — faithful to the extension's
+		SXSentenceSelector flow: the section content fills in at the top as you
+		go; the current sentence is highlighted; a "Suggested translation" card
+		at the bottom proposes the machine translation for that one sentence with
+		Edit / Add / Skip and an MT-provider picker (gear). Header is back · Done.
 	-->
 	<div class="device">
 		<div class="app sx-app">
 
 			<header class="sx-bar">
 				<a class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" href="../" aria-label="Close">
-					<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.7" fill="none"/></svg></span>
+					<span class="cdx-icon cdx-icon--medium"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12 4l-6 6 6 6" stroke="currentColor" stroke-width="1.7" fill="none"/></svg></span>
 				</a>
-				<div class="sx-bar__title">
-					<b id="sx-article">Photosynthesis</b>
-					<span id="sx-dir">English &rarr; Spanish</span>
-				</div>
-				<span class="sx-bar__progress" id="sx-progress">0 / 0</span>
+				<h4 class="sx-bar__title">Translation</h4>
+				<button class="cdx-button" id="sx-done" disabled>Done</button>
 			</header>
 
-			<main class="sx-editor" aria-label="Section translation editor">
-				<p class="sx-note">
-					<span class="cdx-icon cdx-icon--small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2l2.2 4.6L17 7.3l-3.5 3.4.8 4.8L10 13.2 5.7 15.5l.8-4.8L3 7.3l4.8-.7L10 2Z" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></span>
-					Machine translation — tap each line to review and refine.
-				</p>
-
-				<div class="sx-section">
-					<p class="sx-label">Section title</p>
-					<p class="sx-src" id="sx-sec-src">Introduction</p>
-					<div class="sx-tgt" id="sx-sec-tgt" contenteditable="true" role="textbox" aria-label="Section title translation">Introducción</div>
+			<main class="sx-content" aria-label="Section being translated">
+				<div class="sx-content-header">
+					<a class="sx-article-link" id="sx-article-link" href="#" target="_blank" rel="noopener">
+						<strong id="sx-article">Photosynthesis</strong>
+						<span class="cdx-icon cdx-icon--x-small" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M8 5H5v10h10v-3M12 4h4v4M16 4l-7 7" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
+					</a>
+					<h2 class="sx-section-title" id="sx-section-title">Introducción</h2>
 				</div>
-
-				<div id="sx-segs"></div>
+				<p class="sx-para" id="sx-para"></p>
 			</main>
 
-			<div class="sx-publish">
-				<div class="sx-progressbar"><span class="sx-progressbar__fill" id="sx-bar"></span></div>
-				<button class="cdx-button cdx-button--action-progressive cdx-button--weight-primary" id="sx-publish">Publish section</button>
+			<!-- bottom "Suggested translation" card for the current sentence -->
+			<section class="sx-suggest" id="sx-suggest" aria-label="Suggested translation">
+				<div class="sx-suggest__head">
+					<h5 class="sx-suggest__title">Suggested translation</h5>
+					<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only" id="sx-gear" aria-label="Translation options">
+						<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M10 2.5v2M10 15.5v2M2.5 10h2M15.5 10h2M4.7 4.7l1.4 1.4M13.9 13.9l1.4 1.4M15.3 4.7l-1.4 1.4M6.1 13.9l-1.4 1.4" stroke="currentColor" stroke-width="1.3" fill="none"/></svg></span>
+					</button>
+				</div>
+				<div class="sx-suggest__mt" id="sx-mt"></div>
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--action-progressive sx-suggest__edit" id="sx-edit">
+					<span class="cdx-icon cdx-icon--small"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M13.5 3.5l3 3L7 16l-4 1 1-4 9.5-9.5Z" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></span>
+					Edit translation
+				</button>
+				<div class="sx-suggest__actions">
+					<button class="cdx-button cdx-button--weight-quiet" id="sx-skip">Skip</button>
+					<button class="cdx-button cdx-button--action-progressive cdx-button--weight-primary" id="sx-add">Add translation</button>
+				</div>
+			</section>
+
+			<!-- MT provider options (gear) -->
+			<div class="sheet-backdrop" id="sx-opts-bg" hidden></div>
+			<div class="sheet" id="sx-opts" role="dialog" aria-label="Translation options" aria-modal="true" hidden>
+				<div class="sheet__handle" aria-hidden="true"></div>
+				<p class="sheet__title">Choose a translation to start from</p>
+				<button class="sx-opt" data-opt="mt"><span class="sx-opt__label">Machine translation</span><span class="sx-opt__text" id="sx-opt-mt"></span></button>
+				<button class="sx-opt" data-opt="src"><span class="sx-opt__label">Original text</span><span class="sx-opt__text" id="sx-opt-src"></span></button>
+				<button class="sx-opt" data-opt="empty"><span class="sx-opt__label">Start with an empty paragraph</span><span class="sx-opt__text sx-opt__text--muted">Write the translation yourself</span></button>
 			</div>
 
-			<!-- success -->
-			<div class="sx-done" id="sx-done" hidden>
+			<!-- success (mirrors SXPublisher outcome) -->
+			<div class="sx-done-screen" id="sx-done-screen" hidden>
 				<span class="sx-done__check cdx-icon" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M14 24l7 7 14-15" fill="none" stroke="currentColor" stroke-width="3"/></svg></span>
 				<h2 id="sx-done-title">Published to Spanish Wikipedia</h2>
 				<p id="sx-done-text">You added the Introduction to Photosynthesis.</p>
@@ -94,67 +112,114 @@
 			] }
 		};
 
-		function param( name, fallback ) {
-			var v = new URLSearchParams( location.search ).get( name );
-			return v !== null && v !== '' ? v : fallback;
-		}
-
+		function param( n, f ) { var v = new URLSearchParams( location.search ).get( n ); return v ? v : f; }
 		var title = param( 'title', 'Photosynthesis' );
 		var section = param( 'section', 'Introduction' );
-		var from = param( 'from', 'English' );
-		var to = param( 'to', 'Spanish' );
 		var entry = DATA[ title ] || DATA[ 'Photosynthesis' ];
+		var segs = entry.segs;
 
 		document.getElementById( 'sx-article' ).textContent = title;
-		document.getElementById( 'sx-dir' ).innerHTML = from + ' &rarr; ' + to;
-		document.getElementById( 'sx-sec-src' ).textContent = section;
-		document.getElementById( 'sx-sec-tgt' ).textContent = SECTION_ES[ section ] || section;
+		document.getElementById( 'sx-article-link' ).href = 'https://en.wikipedia.org/wiki/' + encodeURIComponent( title.replace( / /g, '_' ) );
+		document.getElementById( 'sx-section-title' ).textContent = SECTION_ES[ section ] || section;
 		document.getElementById( 'sx-done-text' ).textContent = 'You added the ' + section + ' to ' + title + '.';
 		document.getElementById( 'sx-done-impact' ).textContent = 'Articles like this are read ' + entry.impact + '.';
 
-		var segWrap = document.getElementById( 'sx-segs' );
-		var total = entry.segs.length;
-		var reviewed = 0;
-		var progressEl = document.getElementById( 'sx-progress' );
-		var barEl = document.getElementById( 'sx-bar' );
+		// state: each sentence is 'pending' (shown as source) or 'added' (target text)
+		var state = segs.map( function ( s ) { return { added: false, text: s[ 1 ] }; } );
+		var current = 0;
 
-		function updateProgress() {
-			progressEl.textContent = reviewed + ' / ' + total;
-			barEl.style.width = ( total ? Math.round( reviewed / total * 100 ) : 0 ) + '%';
+		var paraEl = document.getElementById( 'sx-para' );
+		var mtEl = document.getElementById( 'sx-mt' );
+		var suggestEl = document.getElementById( 'sx-suggest' );
+		var doneBtn = document.getElementById( 'sx-done' );
+
+		function renderPara() {
+			paraEl.innerHTML = '';
+			segs.forEach( function ( pair, i ) {
+				var span = document.createElement( 'span' );
+				span.className = 'sx-sent';
+				if ( state[ i ].added ) { span.classList.add( 'is-added' ); span.textContent = state[ i ].text; }
+				else { span.textContent = pair[ 0 ]; }            // pending shows source
+				if ( i === current ) { span.classList.add( 'is-current' ); }
+				span.addEventListener( 'click', function () { if ( !state[ i ].added ) { current = i; renderAll(); } } );
+				paraEl.appendChild( span );
+				paraEl.appendChild( document.createTextNode( ' ' ) );
+			} );
 		}
 
-		entry.segs.forEach( function ( pair, i ) {
-			var seg = document.createElement( 'div' );
-			seg.className = 'sx-seg';
-			seg.innerHTML =
-				'<p class="sx-label">Source</p>' +
-				'<p class="sx-src"></p>' +
-				'<div class="sx-tgt" contenteditable="true" role="textbox" aria-label="Translation of sentence ' + ( i + 1 ) + '"></div>' +
-				'<span class="sx-seg__badge">Machine translation</span>';
-			seg.querySelector( '.sx-src' ).textContent = pair[ 0 ];
-			var tgt = seg.querySelector( '.sx-tgt' );
-			tgt.textContent = pair[ 1 ];
-			var badge = seg.querySelector( '.sx-seg__badge' );
-			var counted = false;
-			tgt.addEventListener( 'focus', function () {
-				seg.classList.add( 'is-editing' );
-				if ( !counted ) { counted = true; reviewed++; updateProgress(); }
-			} );
-			tgt.addEventListener( 'blur', function () { seg.classList.remove( 'is-editing' ); } );
-			tgt.addEventListener( 'input', function () {
-				badge.textContent = 'Edited by you';
-				seg.classList.add( 'is-edited' );
-			} );
-			segWrap.appendChild( seg );
+		function firstPending() {
+			for ( var i = 0; i < state.length; i++ ) { if ( !state[ i ].added ) { return i; } }
+			return -1;
+		}
+
+		function renderSuggest() {
+			var allDone = firstPending() === -1;
+			suggestEl.hidden = allDone;
+			if ( allDone ) { return; }
+			mtEl.textContent = state[ current ].text;
+			mtEl.removeAttribute( 'contenteditable' );
+			mtEl.classList.remove( 'is-editing' );
+		}
+
+		function renderAll() { renderPara(); renderSuggest(); }
+
+		function scrollCurrentIntoView() {
+			var el = paraEl.querySelector( '.is-current' );
+			if ( el ) { el.scrollIntoView( { block: 'center', behavior: 'smooth' } ); }
+		}
+
+		document.getElementById( 'sx-add' ).addEventListener( 'click', function () {
+			state[ current ].added = true;
+			doneBtn.disabled = false;
+			var next = firstPending();
+			current = next === -1 ? current : next;
+			renderAll();
+			scrollCurrentIntoView();
 		} );
 
-		updateProgress();
+		document.getElementById( 'sx-skip' ).addEventListener( 'click', function () {
+			var next = current;
+			do { next = ( next + 1 ) % segs.length; } while ( state[ next ].added && next !== current );
+			current = next;
+			renderAll();
+			scrollCurrentIntoView();
+		} );
 
-		document.getElementById( 'sx-publish' ).addEventListener( 'click', function () {
-			var done = document.getElementById( 'sx-done' );
+		document.getElementById( 'sx-edit' ).addEventListener( 'click', function () {
+			mtEl.setAttribute( 'contenteditable', 'true' );
+			mtEl.classList.add( 'is-editing' );
+			mtEl.focus();
+		} );
+		mtEl.addEventListener( 'input', function () { state[ current ].text = mtEl.textContent; } );
+
+		// MT provider options
+		var optsBg = document.getElementById( 'sx-opts-bg' );
+		var opts = document.getElementById( 'sx-opts' );
+		function openOpts() {
+			document.getElementById( 'sx-opt-mt' ).textContent = segs[ current ][ 1 ];
+			document.getElementById( 'sx-opt-src' ).textContent = segs[ current ][ 0 ];
+			optsBg.hidden = false; opts.hidden = false;
+			requestAnimationFrame( function () { optsBg.classList.add( 'is-open' ); opts.classList.add( 'is-open' ); } );
+		}
+		function closeOpts() { optsBg.classList.remove( 'is-open' ); opts.classList.remove( 'is-open' ); setTimeout( function () { optsBg.hidden = true; opts.hidden = true; }, 200 ); }
+		document.getElementById( 'sx-gear' ).addEventListener( 'click', openOpts );
+		optsBg.addEventListener( 'click', closeOpts );
+		Array.prototype.forEach.call( opts.querySelectorAll( '.sx-opt' ), function ( o ) {
+			o.addEventListener( 'click', function () {
+				var k = o.getAttribute( 'data-opt' );
+				state[ current ].text = k === 'src' ? segs[ current ][ 0 ] : ( k === 'empty' ? '' : segs[ current ][ 1 ] );
+				closeOpts(); renderSuggest();
+				if ( k === 'empty' ) { document.getElementById( 'sx-edit' ).click(); }
+			} );
+		} );
+
+		doneBtn.addEventListener( 'click', function () {
+			var done = document.getElementById( 'sx-done-screen' );
 			done.hidden = false;
 			requestAnimationFrame( function () { done.classList.add( 'is-open' ); } );
 		} );
+
+		renderAll();
 	}() );
 	</script>
 </body>
